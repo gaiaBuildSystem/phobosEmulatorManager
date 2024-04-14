@@ -12,7 +12,8 @@ var startEmulatorFunc = (int ram, int storage, int instances) => {
         $"RAM={ram} " +
         $"STORAGE={storage} " +
         $"INSTANCES={instances} " +
-        $"docker compose run --rm --service-ports emulator"
+        $"docker compose run --rm --service-ports emulator &&" +
+        $"docker compose down"
     );
 };
 
