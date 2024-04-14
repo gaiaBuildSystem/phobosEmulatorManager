@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  emulator:
+    image: commontorizon/emulator-dev:6.7.0
+    privileged: true
+    network_mode: host
+    init: false
+    environment:
+      - DISPLAY=${DISPLAY:-:1}
+      - INSTANCES=${INSTANCES:-1}
+      - STORAGE=${STORAGE:-8}
+      - RAM=${RAM:-4}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    depends_on:
+      - dhcp
+
+  dhcp:
+    image: commontorizon/emulator-dev:6.7.0
+    command:
+      - dhcp
+    privileged: true
+    network_mode: host
+    init: false

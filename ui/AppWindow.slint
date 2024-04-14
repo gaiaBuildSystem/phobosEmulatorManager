@@ -1,0 +1,151 @@
+import {
+    Button,
+    HorizontalBox,
+    VerticalBox,
+    GridBox,
+    ListView,
+    AboutSlint,
+    StandardListView,
+    ScrollView,
+    LineEdit, CheckBox, ProgressIndicator
+ } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in-out property<bool> canCreateInstances : false;
+    in-out property<string> storageSize : 8;
+    in-out property<string> ramSize : 4;
+    in-out property<string> instances : 1;
+    callback startEmulator();
+
+    title: "Torizon Emulator Manager";
+
+    max-width: 600px;
+    max-height: 680px;
+    min-width: 600px;
+    min-height: 680px;
+
+    background: @linear-gradient(30deg, #fcfcfc, #0164b1);
+
+    popup := PopupWindow {
+        Rectangle {
+            height:100%;
+            width: 100%;
+            background: yellow;
+        }
+        x: 20px; y: 20px; height: 50px; width: 50px;
+    }
+
+    VerticalLayout {
+        alignment: LayoutAlignment.start;
+        padding: 50px;
+        spacing: 10px;
+
+        HorizontalLayout {
+            alignment: LayoutAlignment.center;
+
+            Image {
+                source: @image-url("./assets/torizonosblack.png");
+            }
+        }
+    }
+
+    VerticalLayout {
+        alignment: LayoutAlignment.end;
+        spacing: 10px;
+        padding-bottom: 40px;
+
+        HorizontalLayout {
+            x: storageSizeInput.x;
+
+            Text {
+                text: "Storage Size (GB):";
+                font-size: 15px;
+            }
+        }
+
+        HorizontalLayout {
+            alignment: LayoutAlignment.center;
+
+            storageSizeInput := LineEdit {
+                input-type: InputType.number;
+                placeholder-text: "8";
+                text <=> storageSize;
+                width: 400px;
+                height: 40px;
+            }
+        }
+
+        HorizontalLayout {
+            x: ramSizeInput.x;
+
+            Text {
+                text: "RAM Size (GB):";
+                font-size: 15px;
+            }
+        }
+
+        HorizontalLayout {
+            alignment: LayoutAlignment.center;
+
+            ramSizeInput := LineEdit {
+                input-type: InputType.number;
+                placeholder-text: "4";
+                text <=> ramSize;
+                width: 400px;
+                height: 40px;
+            }
+        }
+
+        HorizontalLayout {
+            x: ramSizeInput.x;
+            padding-top: 20px;
+
+            canCreateInstancesCheck := CheckBox {
+                text: "Start Multiple Instances";
+                checked <=> canCreateInstances;
+            }
+        }
+
+        HorizontalLayout {
+            x: ramSizeInput.x;
+
+            Text {
+                text: "Number of Instances:";
+                font-size: 15px;
+            }
+        }
+
+        HorizontalLayout {
+            alignment: LayoutAlignment.center;
+
+            instancesInput := LineEdit {
+                input-type: InputType.number;
+                enabled: canCreateInstances;
+                placeholder-text: "1";
+                text <=> instances;
+                width: 400px;
+                height: 40px;
+            }
+        }
+
+        HorizontalLayout {
+            alignment: LayoutAlignment.center;
+            padding-top: 40px;
+
+            buttonStart := Button {
+                text: "Start Emulator";
+                width: 400px;
+                height: 40px;
+                enabled: storageSize != "" && ramSize != "" && instances != "";
+                clicked => {
+                    buttonStart.enabled = false;
+                    storageSizeInput.enabled = false;
+                    ramSizeInput.enabled = false;
+                    instancesInput.enabled = false;
+
+                    startEmulator();
+                }
+            }
+        }
+    }
+}
