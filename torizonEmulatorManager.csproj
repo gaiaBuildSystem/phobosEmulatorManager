@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <SelfContained>true</SelfContained>
-        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
     </PropertyGroup>
 
     <!-- copy the ui folder -->

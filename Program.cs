@@ -12,21 +12,34 @@ var startEmulatorFunc = (int ram, int storage, int instances) => {
         $"RAM={ram} " +
         $"STORAGE={storage} " +
         $"INSTANCES={instances} " +
-        $"docker compose run --rm --service-ports emulator &&" +
-        $"docker compose down"
+        $"docker compose run --rm --service-ports emulator"
     );
+
+    win.RunOnUiThread(() => {
+        win.runningMessage = "Cleaning up emulator resources ...";
+    });
+
+    Exec.Bash("cd ./assets && docker compose down");
+
+    win.RunOnUiThread(() => {
+        win.running = false;
+    });
 };
 
 win.StartEmulator = () => {
     Console.WriteLine("Starting Emulator");
 
-    startEmulatorFunc(
-        int.Parse(win.ramSize.Replace("\"", "")),
-        int.Parse(win.storageSize.Replace("\"", "")),
-        int.Parse(win.instances.Replace("\"", ""))
-    );
+    var rs = (int)win.ramSize;
+    var ss = (int)win.storageSize;
+    var iss = (int)win.instances;
 
-    Environment.Exit(0);
+    new Thread(() => {
+        startEmulatorFunc(
+            rs,
+            ss,
+            iss
+        );
+    }).Start();
 };
 
 win.Run();

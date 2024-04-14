@@ -7,14 +7,16 @@ import {
     AboutSlint,
     StandardListView,
     ScrollView,
-    LineEdit, CheckBox, ProgressIndicator
+    LineEdit, CheckBox, ProgressIndicator, SpinBox
  } from "std-widgets.slint";
 
 export component AppWindow inherits Window {
     in-out property<bool> canCreateInstances : false;
-    in-out property<string> storageSize : 8;
-    in-out property<string> ramSize : 4;
-    in-out property<string> instances : 1;
+    in-out property<int> storageSize : 8;
+    in-out property<int> ramSize : 4;
+    in-out property<int> instances : 1;
+    in-out property<bool> running : false;
+    in-out property<string> runningMessage : "Running ...";
     callback startEmulator();
 
     title: "Torizon Emulator Manager";
@@ -66,10 +68,8 @@ export component AppWindow inherits Window {
         HorizontalLayout {
             alignment: LayoutAlignment.center;
 
-            storageSizeInput := LineEdit {
-                input-type: InputType.number;
-                placeholder-text: "8";
-                text <=> storageSize;
+            storageSizeInput := SpinBox {
+                value <=> storageSize;
                 width: 400px;
                 height: 40px;
             }
@@ -87,10 +87,8 @@ export component AppWindow inherits Window {
         HorizontalLayout {
             alignment: LayoutAlignment.center;
 
-            ramSizeInput := LineEdit {
-                input-type: InputType.number;
-                placeholder-text: "4";
-                text <=> ramSize;
+            ramSizeInput := SpinBox {
+                value <=> ramSize;
                 width: 400px;
                 height: 40px;
             }
@@ -118,16 +116,15 @@ export component AppWindow inherits Window {
         HorizontalLayout {
             alignment: LayoutAlignment.center;
 
-            instancesInput := LineEdit {
-                input-type: InputType.number;
+            instancesInput := SpinBox {
                 enabled: canCreateInstances;
-                placeholder-text: "1";
-                text <=> instances;
+                value <=> instances;
                 width: 400px;
                 height: 40px;
             }
         }
 
+        if (running == false) :
         HorizontalLayout {
             alignment: LayoutAlignment.center;
             padding-top: 40px;
@@ -136,16 +133,46 @@ export component AppWindow inherits Window {
                 text: "Start Emulator";
                 width: 400px;
                 height: 40px;
-                enabled: storageSize != "" && ramSize != "" && instances != "";
+                enabled: storageSize > 0 && ramSize > 0 && instances > 0;
                 clicked => {
                     buttonStart.enabled = false;
                     storageSizeInput.enabled = false;
                     ramSizeInput.enabled = false;
                     instancesInput.enabled = false;
+                    running = true;
+
+                    if (canCreateInstances == false) {
+                        instances = 1;
+                    }
 
                     startEmulator();
                 }
             }
+        }
+
+        if (running == true) :
+        VerticalLayout {
+            HorizontalLayout {
+                padding-top: 40px;
+                x: instancesInput.x;
+
+                Text {
+                    text: runningMessage;
+                    font-size: 15px;
+                }
+            }
+
+            HorizontalLayout {
+                alignment: LayoutAlignment.center;
+
+                runnin := ProgressIndicator {
+                    width: 400px;
+                    height: 40px;
+                    indeterminate: true;
+                }
+            }
+
+
         }
     }
 }
