@@ -7,8 +7,14 @@ var win = new Window();
 Console.WriteLine("Hello Torizon!");
 
 var startEmulatorFunc = (int ram, int storage, int instances) => {
+    var bin_path = AppContext.BaseDirectory;
+
+    win.RunOnUiThread(() => {
+        win.runningMessage = "Running ...";
+    });
+
     Exec.Bash(
-        $"cd ./assets && " +
+        $"cd {bin_path}/assets && " +
         $"RAM={ram} " +
         $"STORAGE={storage} " +
         $"INSTANCES={instances} " +
@@ -19,7 +25,7 @@ var startEmulatorFunc = (int ram, int storage, int instances) => {
         win.runningMessage = "Cleaning up emulator resources ...";
     });
 
-    Exec.Bash("cd ./assets && docker compose down");
+    Exec.Bash($"cd {bin_path}/assets && docker compose down");
 
     win.RunOnUiThread(() => {
         win.running = false;
