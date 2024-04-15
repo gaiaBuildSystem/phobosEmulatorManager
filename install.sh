@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.0.4"
+VERSION="0.0.5"
 
 echo "Installing Torizon Emulator Manager ..."
 
