@@ -45,4 +45,5 @@ jobs:
             --target main $_tag `
             -t "Torizon Emulator Manager $_tag" `
             -n "Torizon Emulator Manager $_tag" `
-            "Torizon-Emulator-Manager-$_tag.zip"
+            "Torizon-Emulator-Manager-$_tag.zip" `
+            install.sh
