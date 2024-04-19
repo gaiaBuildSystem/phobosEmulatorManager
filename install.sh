@@ -4,7 +4,19 @@ VERSION="0.0.8"
 
 echo "Installing Torizon Emulator Manager ..."
 
-sudo apt-get install libicu72 zlib1g unzip
+sudo apt-get install \
+    libicu72 zlib1g unzip \
+    libfontconfig1 \
+    mesa-utils \
+    x11-xserver-utils \
+    libxkbcommon-x11-0 \
+    libfontconfig1 \
+    libfreetype6 \
+    libgbm1 \
+    libinput10 \
+    libxkbcommon0 \
+    xkb-data
+
 wget https://github.com/commontorizon/torizonEmulatorManager/releases/download/$VERSION/Torizon-Emulator-Manager-$VERSION.zip
 sudo mkdir -p /opt/torizon-emulator-manager
 sudo unzip -o Torizon-Emulator-Manager-$VERSION.zip -d /opt/torizon-emulator-manager
