@@ -10,6 +10,18 @@ var startEmulatorFunc = (int ram, int storage, int instances) => {
     var bin_path = AppContext.BaseDirectory;
 
     win.RunOnUiThread(() => {
+        win.runningMessage = "Downloading emulator image ...";
+    });
+
+    Exec.Bash(
+        $"cd {bin_path}/assets && " +
+        $"RAM={ram} " +
+        $"STORAGE={storage} " +
+        $"INSTANCES={instances} " +
+        $"docker compose pull emulator"
+    );
+
+    win.RunOnUiThread(() => {
         win.runningMessage = "Running ...";
     });
 
