@@ -35,10 +35,10 @@ jobs:
         run: |
           xvfb-run pwsh -f ./.vscode/tasks.ps1 run build-debug-local
 
-      - name: Build Release
+      - name: Build Container
         shell: pwsh
         run: |
-          xvfb-run pwsh -f ./.vscode/tasks.ps1 run publish-release-amd64
+          pwsh -f ./.vscode/tasks.ps1 run build-container-torizon-release-amd64
 
       - name: Release
         shell: pwsh
@@ -52,5 +52,5 @@ jobs:
             --target main $_tag `
             -t "Torizon Emulator Manager $_tag" `
             -n "Torizon Emulator Manager $_tag" `
-            "Torizon-Emulator-Manager-$_tag.zip" `
-            install.sh
+            install.sh `
+            docker-compose.yml

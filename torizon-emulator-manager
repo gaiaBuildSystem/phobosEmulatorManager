@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if ! command -v docker &> /dev/null; then
+    echo "❌ Docker is not installed."
+    echo "Please install Docker before running this script."
+    exit 1
+fi
+
+if [ -z "$WSL_DISTRO_NAME" ]; then
+    docker compose \
+        -f /opt/torizon-emulator-manager/docker-compose.yml \
+        run --rm torizon-emulator-manager
+else
+    docker compose \
+        -f /opt/torizon-emulator-manager/docker-compose.wsl.yml \
+        run --rm torizon-emulator-manager-wsl
+fi
