@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.0.8"
+VERSION="0.0.9"
 
 echo "📦 Installing Torizon Emulator Manager ..."
 
