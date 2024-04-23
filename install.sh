@@ -1,8 +1,11 @@
 #!/bin/bash
 
-VERSION="0.0.11"
+VERSION="0.0.12"
 
 echo "📦 Installing Torizon Emulator Manager ..."
+
+echo "🔑 we need sudo permissions"
+sudo echo "🔓 sudo permissions granted"
 
 wget -O /tmp/torizon-emulator-manager \
     https://github.com/commontorizon/torizonEmulatorManager/releases/download/$VERSION/torizon-emulator-manager
@@ -12,8 +15,8 @@ wget -P /tmp/docker-compose.yml \
 echo "📦 Moving Assets ..."
 
 sudo mkdir -p /opt/torizon-emulator-manager
-sudo mv /tmp/torizon-emulator-manager /opt/torizon-emulator-manager
-sudo mv /tmp/docker-compose.yml /opt/torizon-emulator-manager
+sudo mv -f /tmp/torizon-emulator-manager /opt/torizon-emulator-manager
+sudo mv -f /tmp/docker-compose.yml /opt/torizon-emulator-manager
 sudo chmod +x /opt/torizon-emulator-manager/torizon-emulator-manager
 sudo ln -sf /opt/torizon-emulator-manager/torizon-emulator-manager /usr/bin/torizon-emulator-manager
 

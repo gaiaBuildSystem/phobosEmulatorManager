@@ -11,7 +11,7 @@ The Torizon Emulator Manager is a graphical user interface that allows you to co
 To install the Torizon Emulator Manager, you can run the following command:
 
 ```bash
-wget -qO- https://github.com/commontorizon/torizonEmulatorManager/releases/download/0.0.11/install.sh | bash
+wget -qO- https://github.com/commontorizon/torizonEmulatorManager/releases/download/0.0.12/install.sh | bash
 ```
 
 The installation script will download the latest version of the Torizon Emulator Manager and add a symbolic link to your system `bin` directory. After the installation, you can run the Torizon Emulator Manager by typing `torizon-emulator-manager` in your terminal.
