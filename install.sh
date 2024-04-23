@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.0.14"
+VERSION="0.0.15"
 
 echo "📦 Installing Torizon Emulator Manager ..."
 
@@ -20,7 +20,7 @@ sudo mv -f /tmp/docker-compose.yml /opt/torizon-emulator-manager
 sudo chmod +x /opt/torizon-emulator-manager/torizon-emulator-manager
 sudo ln -sf /opt/torizon-emulator-manager/torizon-emulator-manager /usr/bin/torizon-emulator-manager
 
-echo "🛜 Pre-downloading the image ..."
+echo "🛜  Pre-downloading the image ..."
 docker compose -f /opt/torizon-emulator-manager/docker-compose.yml pull
 
 echo "🎉 Torizon Emulator Manager installed successfully!"

@@ -12,6 +12,6 @@ if [ -z "$WSL_DISTRO_NAME" ]; then
         run --rm torizon-emulator-manager
 else
     docker compose \
-        -f /opt/torizon-emulator-manager/docker-compose.wsl.yml \
+        -f /opt/torizon-emulator-manager/docker-compose.yml \
         run --rm torizon-emulator-manager-wsl
 fi
