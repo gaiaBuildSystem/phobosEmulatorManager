@@ -53,4 +53,5 @@ jobs:
             -t "Torizon Emulator Manager $_tag" `
             -n "Torizon Emulator Manager $_tag" `
             install.sh `
-            docker-compose.yml
+            docker-compose.yml `
+            torizon-emulator-manager
