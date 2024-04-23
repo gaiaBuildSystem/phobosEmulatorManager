@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.0.12"
+VERSION="0.0.13"
 
 echo "📦 Installing Torizon Emulator Manager ..."
 
@@ -9,7 +9,7 @@ sudo echo "🔓 sudo permissions granted"
 
 wget -O /tmp/torizon-emulator-manager \
     https://github.com/commontorizon/torizonEmulatorManager/releases/download/$VERSION/torizon-emulator-manager
-wget -P /tmp/docker-compose.yml \
+wget -O /tmp/docker-compose.yml \
     https://github.com/commontorizon/torizonEmulatorManager/releases/download/$VERSION/docker-compose.yml
 
 echo "📦 Moving Assets ..."
