@@ -39,6 +39,8 @@ jobs:
         shell: pwsh
         run: |
           pwsh -f ./.vscode/tasks.ps1 run build-container-torizon-release-amd64
+          docker login -u matheuscastello -p ${{ secrets.DOCKER_PSSWD }}
+          docker compose -f docker-compose.yml push torizon-emulator-manager
 
       - name: Release
         shell: pwsh
