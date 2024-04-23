@@ -60,4 +60,13 @@ win.StartEmulator = () => {
     }).Start();
 };
 
+// for some reason, the window size is not being set correctly
+// so we set it after a delay
+Slint.Timer.Start(TimerMode.SingleShot, 1000, () => {
+    win.RunOnUiThread(() => {
+        win.Width = 600;
+        win.Height = 680;
+    });
+});
+
 win.Run();

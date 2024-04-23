@@ -12,6 +12,8 @@ import {
 
 export component AppWindow inherits Window {
     in-out property<bool> canCreateInstances : false;
+    in-out property<length> Width : 599px;
+    in-out property<length> Height : 679px;
     in-out property<int> storageSize : 8;
     in-out property<int> ramSize : 4;
     in-out property<int> instances : 1;
@@ -21,10 +23,8 @@ export component AppWindow inherits Window {
 
     title: "Torizon Emulator Manager";
 
-    max-width: 600px;
-    max-height: 680px;
-    min-width: 600px;
-    min-height: 680px;
+    width <=> root.Width;
+    height <=> root.Height;
 
     background: @linear-gradient(30deg, #fcfcfc, #0164b1);
 
