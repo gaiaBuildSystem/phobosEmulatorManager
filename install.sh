@@ -1,16 +1,14 @@
 #!/bin/bash
 
-VERSION="0.0.15"
-
 echo "📦 Installing Torizon Emulator Manager ..."
 
 echo "🔑 we need sudo permissions"
 sudo echo "🔓 sudo permissions granted"
 
 wget -O /tmp/torizon-emulator-manager \
-    https://github.com/commontorizon/torizonEmulatorManager/releases/download/$VERSION/torizon-emulator-manager
+    https://gitlab.com/commontorizon/torizonEmulatorManager/-/jobs/artifacts/main/raw/torizon-emulator-manager?job=build-docker-image
 wget -O /tmp/docker-compose.yml \
-    https://github.com/commontorizon/torizonEmulatorManager/releases/download/$VERSION/docker-compose.yml
+    https://gitlab.com/commontorizon/torizonEmulatorManager/-/jobs/artifacts/main/raw/docker-compose.yml?job=build-docker-image
 
 echo "📦 Moving Assets ..."
 
