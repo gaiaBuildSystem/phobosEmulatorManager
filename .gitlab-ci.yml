@@ -10,6 +10,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
   DOCKER_BUILDKIT: 1
+  VERSION: "v0.0.15"
 
 stages:
   - build
@@ -47,7 +48,7 @@ release-artifacts:
     name: registry.gitlab.com/gitlab-org/release-cli:latest
 
   script: |
-    export VERSION="v$(cat VERSION)"
+    echo "Releasing version v$VERSION"
 
   release:
     tag_name: $VERSION
