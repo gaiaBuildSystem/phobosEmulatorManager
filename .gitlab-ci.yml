@@ -28,7 +28,6 @@ build-docker-image:
     echo '
 
       docker login -u matheuscastello -p $env:DOCKER_PSSWD
-      docker pull mcr.microsoft.com/dotnet/sdk:8.0
       ./.vscode/tasks.ps1 run build-container-torizon-release-amd64
       docker compose -f docker-compose.yml push torizon-emulator-manager
 
@@ -44,6 +43,8 @@ release-artifacts:
   stage: release
   needs:
     - build-docker-image
+  image:
+    name: registry.gitlab.com/gitlab-org/release-cli:latest
 
   script: |
     export VERSION="v$(cat VERSION)"
