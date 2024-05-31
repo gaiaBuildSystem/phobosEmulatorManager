@@ -6,9 +6,9 @@ echo "🔑 we need sudo permissions"
 sudo echo "🔓 sudo permissions granted"
 
 wget -O /tmp/torizon-emulator-manager \
-    https://gitlab.com/commontorizon/torizonEmulatorManager/-/jobs/artifacts/main/raw/torizon-emulator-manager?job=build-docker-image
+    https://github.com/commontorizon/torizonEmulatorManager/releases/latest/download/torizon-emulator-manager
 wget -O /tmp/docker-compose.yml \
-    https://gitlab.com/commontorizon/torizonEmulatorManager/-/jobs/artifacts/main/raw/docker-compose.yml?job=build-docker-image
+    https://github.com/commontorizon/torizonEmulatorManager/releases/latest/download/docker-compose.yml
 
 echo "📦 Moving Assets ..."
 
