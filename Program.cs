@@ -4,8 +4,6 @@ using Torizon.Shell;
 
 var win = new Window();
 
-Console.WriteLine("Hello Torizon!");
-
 var startEmulatorFunc = (int ram, int storage, int instances) => {
     var bin_path = AppContext.BaseDirectory;
 
