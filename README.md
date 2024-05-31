@@ -1,6 +1,6 @@
 # Torizon Emulator Manager
 
-![](.doc/image.png)
+![](.doc/imageRedesigned.png)
 
 The Torizon Emulator Manager is a graphical user interface that allows you to configure resources and run virtual machines that run Torizon OS. The Torizon Emulator Manager is based on the QEMU emulator and runs inside a Docker container with the necessary dependencies and leveraging the Docker bridge network to communicate with the external world.
 
