@@ -26,5 +26,6 @@
   "docker_tag": "amd64-v1",
   "tcb.clientId": "",
   "tcb.clientSecret": "secret",
-  "tcb.fleetName": ""
+  "tcb.fleetName": "",
+  "slint.preview.style": "fluent-dark"
 }

@@ -15,7 +15,8 @@
             "cwd": "${workspaceFolder}",
             "env": {
                 "WAYLAND_DISPLAY": "",
-                "RUST_BACKTRACE": "1"
+                "RUST_BACKTRACE": "1",
+                "SLINT_STYLE": "fluent-dark"
             },
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
