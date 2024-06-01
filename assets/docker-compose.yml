@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   emulator:
-    image: commontorizon/emulator-dev:6.7.0
+    image: commontorizon/emulator-dev:6.7.1
     privileged: true
     network_mode: host
     init: false
@@ -17,7 +17,7 @@ services:
       - dhcp
 
   dhcp:
-    image: commontorizon/emulator-dev:6.7.0
+    image: commontorizon/emulator-dev:6.7.1
     command:
       - dhcp
     privileged: true
