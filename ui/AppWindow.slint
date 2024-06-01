@@ -20,6 +20,7 @@ export component AppWindow inherits Window {
     in-out property<int> ramSize : 4;
     in-out property<int> instances : 1;
     in-out property<bool> running : false;
+    in-out property<bool> settled : false;
     in-out property<string> runningMessage : "Running ...";
     in-out property<int> backDeg : 40;
     callback startEmulator();
@@ -210,6 +211,7 @@ export component AppWindow inherits Window {
                 }
             }
 
+            if (settled == false) :
             HorizontalLayout {
                 alignment: LayoutAlignment.center;
 

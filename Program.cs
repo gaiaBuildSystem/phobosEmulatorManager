@@ -20,7 +20,8 @@ var startEmulatorFunc = (int ram, int storage, int instances) => {
     );
 
     win.RunOnUiThread(() => {
-        win.runningMessage = "Running ...";
+        win.runningMessage = "RUNNING ...";
+        win.settled = true;
     });
 
     Exec.Bash(
@@ -32,6 +33,7 @@ var startEmulatorFunc = (int ram, int storage, int instances) => {
     );
 
     win.RunOnUiThread(() => {
+        win.settled = false;
         win.runningMessage = "Cleaning up emulator resources ...";
     });
 
