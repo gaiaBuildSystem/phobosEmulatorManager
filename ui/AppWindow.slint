@@ -41,6 +41,7 @@ export component AppWindow inherits Window {
 
     init => {
         debug("Initializing ...");
+        vmLogo.opacity = 1;
         vmLogo.padding-right = -10px;
         torizonLogo.opacity = 1;
     }
@@ -56,6 +57,7 @@ export component AppWindow inherits Window {
             vmLogo := HorizontalBox {
                 padding-top: 20px;
                 padding-right: -50px;
+                opacity: 0;
 
                 Image {
                     source: @image-url("./assets/torizonvm110.png");
@@ -65,9 +67,15 @@ export component AppWindow inherits Window {
 
                 animate padding-right {
                      duration: 500ms;
-                     delay: 500ms;
+                     delay: 1.5s;
                      easing: ease-in-out;
                 }
+
+                animate opacity  {
+                    duration: 500ms;
+                    delay: 1.5s;
+                    easing: ease-in-out;
+               }
             }
 
             torizonLogo := HorizontalBox {
@@ -83,7 +91,7 @@ export component AppWindow inherits Window {
 
                 animate opacity  {
                      duration: 500ms;
-                     delay: 500ms;
+                     delay: 1.5s;
                      easing: ease-in-out;
                 }
             }
