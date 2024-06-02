@@ -11,6 +11,9 @@ if [ ! command -v docker &> /dev/null ]; then
     exit 1
 fi
 
+# make the xhost accessible to the container
+xhost + || true
+
 if [ -z "$WSL_DISTRO_NAME" ]; then
     docker compose \
         -f /opt/torizon-emulator-manager/docker-compose.yml \
@@ -20,3 +23,6 @@ else
         -f /opt/torizon-emulator-manager/docker-compose.yml \
         run --rm torizon-emulator-manager-wsl
 fi
+
+# remove the xhost access
+xhost - || true
