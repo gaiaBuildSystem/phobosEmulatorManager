@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ ! -e /dev/kvm ]; then
-    echo "❌ KVM module not found. Please make sure it is enabled in your kernel."
-    exit 1
+    echo "⚠️ KVM module not found. The emulator will run in software mode."
+    export NO_KVM=1
 fi
 
 if [ ! command -v docker &> /dev/null ]; then
@@ -15,13 +15,27 @@ fi
 xhost + || true
 
 if [ -z "$WSL_DISTRO_NAME" ]; then
-    docker compose \
-        -f /opt/torizon-emulator-manager/docker-compose.yml \
-        run --rm torizon-emulator-manager
+
+    if [ -z "$NO_KVM" ]; then
+        docker compose \
+            -f /opt/torizon-emulator-manager/docker-compose.yml \
+            run --rm torizon-emulator-manager
+    else
+         docker compose \
+            -f /opt/torizon-emulator-manager/docker-compose.yml \
+            run --rm torizon-emulator-manager-no-kvm
+    fi
 else
-    docker compose \
-        -f /opt/torizon-emulator-manager/docker-compose.yml \
-        run --rm torizon-emulator-manager-wsl
+
+    if [ -z "$NO_KVM" ]; then
+        docker compose \
+            -f /opt/torizon-emulator-manager/docker-compose.yml \
+            run --rm torizon-emulator-manager-wsl
+    else
+         docker compose \
+            -f /opt/torizon-emulator-manager/docker-compose.yml \
+            run --rm torizon-emulator-manager-no-kvm-wsl
+    fi
 fi
 
 # remove the xhost access

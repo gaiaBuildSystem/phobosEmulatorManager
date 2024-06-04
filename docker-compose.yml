@@ -43,3 +43,46 @@ services:
     pid: host
     network_mode: host
     privileged: true
+
+  torizon-emulator-manager-no-kvm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: commontorizon/torizon-emulator-manager:amd64-v1
+    environment:
+      - XDG_DATA_DIRS=${XDG_DATA_DIRS}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      - WAYLAND_DISPLAY=
+      - DISPLAY=${DISPLAY}
+      - SLINT_STYLE=fluent-dark
+      - NO_KVM=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /run:/run
+      - /var:/var
+    pid: host
+    network_mode: host
+    privileged: true
+
+  torizon-emulator-manager-no-kvm-wsl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: commontorizon/torizon-emulator-manager:amd64-v1
+    environment:
+      - XDG_DATA_DIRS=${XDG_DATA_DIRS}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+      - WAYLAND_DISPLAY=
+      - DISPLAY=${DISPLAY}
+      - SLINT_STYLE=fluent-dark
+      - NO_KVM=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/wsl/docker.sock:/var/run/docker.sock
+      - /run:/run
+      - /var:/var
+    pid: host
+    network_mode: host
+    privileged: true
