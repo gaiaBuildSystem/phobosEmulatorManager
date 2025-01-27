@@ -11,6 +11,19 @@ if [ ! command -v docker &> /dev/null ]; then
     exit 1
 fi
 
+# get the arch and set the tag accordingly
+ARCH=$(uname -m)
+
+if [ "$ARCH" == "x86_64" ]; then
+    export TAG="amd64-v2"
+elif [ "$ARCH" == "aarch64" ]; then
+    export TAG="arm64-v2"
+else
+    echo "❌ Unsupported architecture: $ARCH"
+    echo "Please run this script on an x86_64 or aarch64 machine."
+    exit 1
+fi
+
 # make the xhost accessible to the container
 xhost + || true
 
@@ -19,22 +32,22 @@ if [ -z "$WSL_DISTRO_NAME" ]; then
     if [ -z "$NO_KVM" ]; then
         docker compose \
             -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run --rm torizon-emulator-manager
+            run -T --rm torizon-emulator-manager
     else
          docker compose \
             -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run --rm torizon-emulator-manager-no-kvm
+            run -T --rm torizon-emulator-manager-no-kvm
     fi
 else
 
     if [ -z "$NO_KVM" ]; then
         docker compose \
             -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run --rm torizon-emulator-manager-wsl
+            run -T --rm torizon-emulator-manager-wsl
     else
          docker compose \
             -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run --rm torizon-emulator-manager-no-kvm-wsl
+            run -T --rm torizon-emulator-manager-no-kvm-wsl
     fi
 fi
 

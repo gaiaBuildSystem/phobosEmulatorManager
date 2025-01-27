@@ -7,7 +7,10 @@ import {
     AboutSlint,
     StandardListView,
     ScrollView,
-    LineEdit, CheckBox, ProgressIndicator, SpinBox
+    LineEdit,
+    CheckBox,
+    ProgressIndicator,
+    SpinBox
  } from "std-widgets.slint";
 
 import "./assets/Frutiger.ttf";
@@ -21,6 +24,7 @@ export component AppWindow inherits Window {
     in-out property<int> instances : 1;
     in-out property<bool> running : false;
     in-out property<bool> settled : false;
+    in-out property<bool> initializing : true;
     in-out property<string> runningMessage : "Running ...";
     in-out property<int> backDeg : 40;
     callback startEmulator();
@@ -32,7 +36,9 @@ export component AppWindow inherits Window {
     width <=> root.Width;
     height <=> root.Height;
 
-    background: @linear-gradient(backDeg * -1deg, #02521e, #001f3e);
+    Rectangle {
+        background: @linear-gradient(backDeg * -1deg, #02521e, #001f3e);
+    }
 
     TouchArea {
         pointer-event => {
@@ -40,12 +46,19 @@ export component AppWindow inherits Window {
         }
     }
 
-    init => {
+    public function __init() {
         debug("Initializing ...");
         vmLogo.opacity = 1;
         vmLogo.padding-right = -10px;
         torizonLogo.opacity = 1;
+        initializing = false;
     }
+
+    // I will not use the init because on Linux it demands some time
+    // to render the window, so I'm using the __init from code behind
+    // init => {
+
+    // }
 
     VerticalLayout {
         alignment: LayoutAlignment.start;
@@ -67,16 +80,16 @@ export component AppWindow inherits Window {
                 }
 
                 animate padding-right {
-                     duration: 500ms;
-                     delay: 1.5s;
-                     easing: ease-in-out;
+                    duration: 500ms;
+                    delay: 1.5s;
+                    easing: ease-in-out;
                 }
 
                 animate opacity  {
                     duration: 500ms;
                     delay: 1.5s;
                     easing: ease-in-out;
-               }
+                }
             }
 
             torizonLogo := HorizontalBox {
@@ -158,6 +171,7 @@ export component AppWindow inherits Window {
         }
 
         HorizontalLayout {
+            padding-top: 20px;
             x: ramSizeInput.x;
 
             Text {
@@ -186,7 +200,7 @@ export component AppWindow inherits Window {
                 text: "START EMULATOR";
                 width: 400px;
                 height: 40px;
-                enabled: storageSize > 0 && ramSize > 0 && instances > 0 && !running;
+                enabled: storageSize > 0 && ramSize > 0 && instances > 0 && !running && !initializing;
                 clicked => {
                     running = true;
 

@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:amd64-v1
+    image: commontorizon/torizon-emulator-manager:${TAG}
     devices:
       - /dev/kvm
     environment:
@@ -12,6 +12,7 @@ services:
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
+      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -25,7 +26,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:amd64-v1
+    image: commontorizon/torizon-emulator-manager:${TAG}
     devices:
       - /dev/kvm
     environment:
@@ -34,6 +35,7 @@ services:
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
+      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -48,7 +50,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:amd64-v1
+    image: commontorizon/torizon-emulator-manager:${TAG}
     environment:
       - XDG_DATA_DIRS=${XDG_DATA_DIRS}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
@@ -56,6 +58,7 @@ services:
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
+      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -69,7 +72,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:amd64-v1
+    image: commontorizon/torizon-emulator-manager:${TAG}
     environment:
       - XDG_DATA_DIRS=${XDG_DATA_DIRS}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
@@ -77,6 +80,7 @@ services:
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
+      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock

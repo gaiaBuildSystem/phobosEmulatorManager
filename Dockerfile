@@ -7,13 +7,7 @@ ARG IMAGE_ARCH=
 ##
 # Base container version
 ##
-ARG SDK_BASE_VERSION=4-8.0-rc
-ARG BASE_VERSION=next
-
-##
-# Directory of the application inside container
-##
-ARG APP_ROOT=
+ARG BASE_VERSION=4
 
 ##
 # Board GPU vendor prefix
@@ -23,56 +17,12 @@ ARG GPU=
 # ARGUMENTS --------------------------------------------------------------------
 
 
-
-# BUILD ------------------------------------------------------------------------
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS Build
-
-ARG IMAGE_ARCH
-ARG APP_ROOT
-
-ENV RUST_BACKTRACE=1
-
-# this is needed for the build to work witht he libslint
-
-# FIXME: for now we need to use the xvfb-run to avoid the backend to crash
-#        this is a workaround and should be fixed in the future,
-#        I think that for interpret the .slint should not be needed to have
-#        a display server running. But we work with what we have.
-RUN apt-get -q -y update && \
-    apt-get -q -y install \
-    libfontconfig1 \
-    mesa-utils \
-    x11-xserver-utils \
-    libxkbcommon-x11-0 \
-    libfontconfig1 \
-	libfreetype6 \
-	libgbm1 \
-	libinput10 \
-	libxkbcommon0 \
-    xkb-data \
-    xvfb
-
-COPY . /build
-WORKDIR /build
-
-RUN dotnet restore && \
-    xvfb-run dotnet publish -c Release -r linux-${IMAGE_ARCH} && \
-    # we need to move the output to the correct folder
-    if [ "${IMAGE_ARCH}" = "amd64" ]; then \
-        mv /build/bin/Release/net8.0/linux-x64 /build/bin/Release/net8.0/linux-amd64 ; \
-    fi
-
-# BUILD ------------------------------------------------------------------------
-
-
-
 # DEPLOY ------------------------------------------------------------------------
 FROM --platform=linux/${IMAGE_ARCH} \
     torizon/wayland-base${GPU}:${BASE_VERSION} AS Deploy
 
 ARG IMAGE_ARCH
 ARG GPU
-ARG APP_ROOT
 
 # for vivante GPU we need some "special" sauce
 RUN apt-get -q -y update && \
@@ -92,7 +42,9 @@ RUN apt-get -q -y update && \
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
     apt-get install \
-    libicu72 zlib1g unzip \
+    libicu72 \
+    zlib1g \
+    unzip \
     libfontconfig1 \
     mesa-utils \
     x11-xserver-utils \
@@ -103,6 +55,9 @@ RUN apt-get update \
     libinput10 \
     libxkbcommon0 \
     xkb-data \
+    python3 \
+    python3-pip \
+    pipenv \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
@@ -119,19 +74,26 @@ COPY --from=docker:dind /usr/local/libexec/docker/cli-plugins /usr/local/lib/doc
 # Default to the Skia backend for best performance
 ENV SLINT_BACKEND=winit-skia
 # Default style to fluent
-ENV SLINT_STYLE=fluent
+ENV SLINT_STYLE=fluent-dark
 
 # Copy the application compiled in the build step to the $APP_ROOT directory
 # path inside the container, where $APP_ROOT is the torizon_app_root
 # configuration defined in settings.json
-COPY --from=Build /build/bin/Release/net8.0/linux-${IMAGE_ARCH}/publish ${APP_ROOT}
+COPY ./ui /home/torizon/ui
+COPY ./assets /home/torizon/assets
+COPY ./main.py /home/torizon
+COPY ./Pipfile /home/torizon
+COPY ./Pipfile.lock /home/torizon
 
 # "cd" (enter) into the APP_ROOT directory
-WORKDIR ${APP_ROOT}
+WORKDIR /home/torizon
+
+# "install"
+RUN pipenv sync
 
 USER root
 
 # Command executed in runtime when the container starts
-CMD ["./torizonEmulatorManager"]
+CMD ["pipenv", "run", "python", "main.py"]
 
 # DEPLOY ------------------------------------------------------------------------
