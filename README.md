@@ -11,7 +11,7 @@ The PhobOS Emulator Manager is a graphical user interface that allows you to con
 To install the PhobOS Emulator Manager, you can run the following command:
 
 ```bash
-wget -qO- https://github.com/commontorizon/torizonEmulatorManager/releases/latest/download/install.sh  | bash
+wget -qO- https://github.com/gaiaBuildSystem/phobosEmulatorManager/releases/latest/download/install.sh  | bash
 ```
 
 The installation script will download the latest version of the PhobOS Emulator Manager and add a symbolic link to your system `bin` directory. After the installation, you can run the PhobOS Emulator Manager by typing `phobos-emulator-manager` in your terminal.

@@ -96,7 +96,7 @@ jobs:
           $RAISE_SUBPROC_ERROR = True
           $VERSION = $(cat ./VERSION)
 
-          gh repo set-default commontorizon/torizonEmulatorManager
+          gh repo set-default gaiaBuildSystem/phobosEmulatorManager
 
           gh release create \
             --target main $VERSION \
