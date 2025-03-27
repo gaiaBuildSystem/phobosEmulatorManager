@@ -31,23 +31,23 @@ if [ -z "$WSL_DISTRO_NAME" ]; then
 
     if [ -z "$NO_KVM" ]; then
         docker compose \
-            -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run -T --rm torizon-emulator-manager
+            -f /opt/phobos-emulator-manager/docker-compose.yml \
+            run -T --rm phobos-emulator-manager
     else
          docker compose \
-            -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run -T --rm torizon-emulator-manager-no-kvm
+            -f /opt/phobos-emulator-manager/docker-compose.yml \
+            run -T --rm phobos-emulator-manager-no-kvm
     fi
 else
 
     if [ -z "$NO_KVM" ]; then
         docker compose \
-            -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run -T --rm torizon-emulator-manager-wsl
+            -f /opt/phobos-emulator-manager/docker-compose.yml \
+            run -T --rm phobos-emulator-manager-wsl
     else
          docker compose \
-            -f /opt/torizon-emulator-manager/docker-compose.yml \
-            run -T --rm torizon-emulator-manager-no-kvm-wsl
+            -f /opt/phobos-emulator-manager/docker-compose.yml \
+            run -T --rm phobos-emulator-manager-no-kvm-wsl
     fi
 fi
 

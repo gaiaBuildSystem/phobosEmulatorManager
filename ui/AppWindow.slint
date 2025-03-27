@@ -13,7 +13,6 @@ import {
     SpinBox
  } from "std-widgets.slint";
 
-import "./assets/Frutiger.ttf";
 
 export component AppWindow inherits Window {
     in-out property<bool> canCreateInstances : false;
@@ -29,15 +28,13 @@ export component AppWindow inherits Window {
     in-out property<int> backDeg : 40;
     callback startEmulator();
 
-    title: "Torizon Emulator Manager";
-
-    default-font-family: "Frutiger";
+    title: "PhobOS Emulator Manager";
 
     width <=> root.Width;
     height <=> root.Height;
 
     Rectangle {
-        background: @linear-gradient(backDeg * -1deg, #02521e, #001f3e);
+        background: @linear-gradient(backDeg * -1deg, #810c35, #3c0c1d,);
     }
 
     TouchArea {
@@ -48,9 +45,9 @@ export component AppWindow inherits Window {
 
     public function __init() {
         debug("Initializing ...");
-        vmLogo.opacity = 1;
-        vmLogo.padding-right = -10px;
-        torizonLogo.opacity = 1;
+        vmLogo.opacity = 0.6;
+        vmLogo.padding-right = 5px;
+        torizonLogo.opacity = 0.6;
         initializing = false;
     }
 
@@ -67,14 +64,16 @@ export component AppWindow inherits Window {
 
         HorizontalLayout {
             alignment: LayoutAlignment.center;
+            padding-top: 30px;
 
             vmLogo := HorizontalBox {
-                padding-top: 20px;
-                padding-right: -50px;
+                padding-top: -8px;
+                padding-right: -40px;
+                padding-left: -2px;
                 opacity: 0;
 
                 Image {
-                    source: @image-url("./assets/torizonvm110.png");
+                    source: @image-url("./assets/monitor.png");
                     width: 110px;
                     height: 110px;
                 }
@@ -95,12 +94,13 @@ export component AppWindow inherits Window {
             torizonLogo := HorizontalBox {
                 padding-right: 10px;
                 padding-top: 18px;
+                padding-left: 10px;
                 opacity: 0;
 
                 Image {
-                    source: @image-url("./assets/torizonosNoLogo.png");
-                    width: 412px;
-                    height: 103px;
+                    source: @image-url("./assets/phoboslogoWhite.png");
+                    width: 410px * 0.7;
+                    height: 81px * 0.7;
                 }
 
                 animate opacity  {

@@ -1,5 +1,5 @@
 {
-  "workbench.sideBar.location": "right",
+  "workbench.sideBar.location": "left",
   "[python]": {
     "diffEditor.ignoreTrimWhitespace": false,
     "editor.defaultColorDecorators": "always",

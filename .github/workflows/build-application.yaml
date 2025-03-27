@@ -67,11 +67,11 @@ jobs:
         run: |
           # run the virtual framebuffer
           chmod +x ./install.sh
-          chmod +x ./torizon-emulator-manager
+          chmod +x ./phobos-emulator-manager
 
           ./install.sh
 
-          sudo xvfb-run -a -s "-screen 0 1920x1080x24 -ac" sh -c "TORIZON_EMULATOR_TEST=1 ./torizon-emulator-manager & APP_ID=$! && sleep 5s && xwd -root -silent | convert xwd:- screenshot.png && wait $APP_ID; EXIT_CODE=$? && exit $EXIT_CODE"
+          sudo xvfb-run -a -s "-screen 0 1920x1080x24 -ac" sh -c "TORIZON_EMULATOR_TEST=1 ./phobos-emulator-manager & APP_ID=$! && sleep 5s && xwd -root -silent | convert xwd:- screenshot.png && wait $APP_ID; EXIT_CODE=$? && exit $EXIT_CODE"
 
           # wait for the virtual framebuffer to finish
           APP_EXIT_CODE=$?
@@ -100,8 +100,8 @@ jobs:
 
           gh release create \
             --target main $VERSION \
-            -t "Torizon Emulator Manager $VERSION" \
-            -n "Torizon Emulator Manager $VERSION" \
+            -t "PhobOS Emulator Manager $VERSION" \
+            -n "PhobOS Emulator Manager $VERSION" \
             install.sh \
             docker-compose.yml \
-            torizon-emulator-manager
+            phobos-emulator-manager

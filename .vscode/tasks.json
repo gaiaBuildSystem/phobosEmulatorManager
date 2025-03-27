@@ -99,7 +99,7 @@
                 "build",
                 "--build-arg",
                 "IMAGE_ARCH=x86_64",
-                "torizon-emulator-manager"
+                "phobos-emulator-manager"
             ],
             "problemMatcher": [
                 "$tsc"
@@ -122,7 +122,7 @@
             "args": [
                 "compose",
                 "push",
-                "torizon-emulator-manager"
+                "phobos-emulator-manager"
             ],
             "problemMatcher": [
                 "$tsc"
@@ -147,7 +147,7 @@
                 "build",
                 "--build-arg",
                 "IMAGE_ARCH=arm64",
-                "torizon-emulator-manager"
+                "phobos-emulator-manager"
             ],
             "problemMatcher": [
                 "$tsc"
@@ -170,7 +170,7 @@
             "args": [
                 "compose",
                 "push",
-                "torizon-emulator-manager"
+                "phobos-emulator-manager"
             ],
             "problemMatcher": [
                 "$tsc"

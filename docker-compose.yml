@@ -1,9 +1,9 @@
 services:
-  torizon-emulator-manager:
+  phobos-emulator-manager:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:${TAG}
+    image: pergamos/phobos-emulator-manager:${TAG}
     devices:
       - /dev/kvm
     environment:
@@ -22,11 +22,11 @@ services:
     network_mode: host
     privileged: true
 
-  torizon-emulator-manager-wsl:
+  phobos-emulator-manager-wsl:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:${TAG}
+    image: pergamos/phobos-emulator-manager:${TAG}
     devices:
       - /dev/kvm
     environment:
@@ -46,11 +46,11 @@ services:
     network_mode: host
     privileged: true
 
-  torizon-emulator-manager-no-kvm:
+  phobos-emulator-manager-no-kvm:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:${TAG}
+    image: pergamos/phobos-emulator-manager:${TAG}
     environment:
       - XDG_DATA_DIRS=${XDG_DATA_DIRS}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
@@ -68,11 +68,11 @@ services:
     network_mode: host
     privileged: true
 
-  torizon-emulator-manager-no-kvm-wsl:
+  phobos-emulator-manager-no-kvm-wsl:
     build:
       context: .
       dockerfile: Dockerfile
-    image: commontorizon/torizon-emulator-manager:${TAG}
+    image: pergamos/phobos-emulator-manager:${TAG}
     environment:
       - XDG_DATA_DIRS=${XDG_DATA_DIRS}
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}

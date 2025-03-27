@@ -1,31 +1,31 @@
 #!/bin/bash
 
-echo "📦 Installing Torizon Emulator Manager ..."
+echo "📦 Installing PhobOS Emulator Manager ..."
 
 echo "🔑 we need sudo permissions"
 sudo echo "🔓 sudo permissions granted"
 
 # check if TORIZON_EMULATOR_TEST is set, so we nee to download from source
 if [ -z "$TORIZON_EMULATOR_TEST" ]; then
-    wget -O /tmp/torizon-emulator-manager \
-        https://github.com/commontorizon/torizonEmulatorManager/releases/latest/download/torizon-emulator-manager
+    wget -O /tmp/phobos-emulator-manager \
+        https://github.com/gaiaBuildSystem/phobosEmulatorManager/releases/latest/download/phobos-emulator-manager
     wget -O /tmp/docker-compose.yml \
-        https://github.com/commontorizon/torizonEmulatorManager/releases/latest/download/docker-compose.yml
+        https://github.com/gaiaBuildSystem/phobosEmulatorManager/releases/latest/download/docker-compose.yml
 else
     echo "🧪 Downloading from the repo source to test ..."
-    wget -O /tmp/torizon-emulator-manager \
-        https://github.com/commontorizon/torizonEmulatorManager/raw/refs/heads/main/torizon-emulator-manager
+    wget -O /tmp/phobos-emulator-manager \
+        https://github.com/gaiaBuildSystem/phobosEmulatorManager/raw/refs/heads/main/phobos-emulator-manager
     wget -O /tmp/docker-compose.yml \
-        https://github.com/commontorizon/torizonEmulatorManager/raw/refs/heads/main/docker-compose.yml
+        https://github.com/gaiaBuildSystem/phobosEmulatorManager/raw/refs/heads/main/docker-compose.yml
 fi
 
 echo "📦 Moving Assets ..."
 
-sudo mkdir -p /opt/torizon-emulator-manager
-sudo mv -f /tmp/torizon-emulator-manager /opt/torizon-emulator-manager
-sudo mv -f /tmp/docker-compose.yml /opt/torizon-emulator-manager
-sudo chmod +x /opt/torizon-emulator-manager/torizon-emulator-manager
-sudo ln -sf /opt/torizon-emulator-manager/torizon-emulator-manager /usr/bin/torizon-emulator-manager
+sudo mkdir -p /opt/phobos-emulator-manager
+sudo mv -f /tmp/phobos-emulator-manager /opt/phobos-emulator-manager
+sudo mv -f /tmp/docker-compose.yml /opt/phobos-emulator-manager
+sudo chmod +x /opt/phobos-emulator-manager/phobos-emulator-manager
+sudo ln -sf /opt/phobos-emulator-manager/phobos-emulator-manager /usr/bin/phobos-emulator-manager
 
 echo "🛜  Pre-downloading the image ..."
 
@@ -42,7 +42,7 @@ else
     exit 1
 fi
 
-docker compose -f /opt/torizon-emulator-manager/docker-compose.yml pull
+docker compose -f /opt/phobos-emulator-manager/docker-compose.yml pull
 
-echo "🎉 Torizon Emulator Manager installed successfully!"
-echo "Now run torizon-emulator-manager command to start the application."
+echo "🎉 PhobOS Emulator Manager installed successfully!"
+echo "Now run phobos-emulator-manager command to start the application."
