@@ -6,7 +6,8 @@ The PhobOS Emulator Manager is a graphical user interface that allows you to con
 
 ## Installation
 
-> ⚠️ **Warning**: The PhobOS Emulator Manager depends on Docker. Make sure you have Docker installed on your host machine before running the PhobOS Emulator Manager.
+> [!WARNING]
+> The PhobOS Emulator Manager depends on Docker. Make sure you have Docker installed on your host machine before running the PhobOS Emulator Manager.
 
 To install the PhobOS Emulator Manager, you can run the following command:
 
@@ -20,4 +21,5 @@ The installation script will download the latest version of the PhobOS Emulator 
 
 To test fleet of devices, you can run multiple instances of the PhobOS. Check the `Start Multiple Instances` checkbox and set the number of instances you want to run.
 
-> ⚠️ **Warning**: Running multiple instances may require a lot of resources from your host machine. Make sure you have enough resources available. The manager will allocate the same amount of resources configured in the `Storage Size` and `RAM Size`fields for each instance.
+> [!WARNING]
+> Running multiple instances may require a lot of resources from your host machine. Make sure you have enough resources available. The manager will allocate the same amount of resources configured in the `Storage Size` and `RAM Size`fields for each instance.
