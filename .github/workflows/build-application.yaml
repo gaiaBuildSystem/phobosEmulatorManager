@@ -17,6 +17,7 @@ jobs:
       - name: Setup
         shell: bash
         run: |
+          sudo apt-get -q -y update
           sudo apt-get -q -y install \
             libfontconfig1 \
             mesa-utils \
