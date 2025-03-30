@@ -1,4 +1,4 @@
-name: Build & Deploy TorizonCore
+name: Build & Deploy PhobOS Emu
 on:
   push:
     branches:
@@ -63,7 +63,7 @@ jobs:
       - name: Test
         shell: bash
         env:
-          TORIZON_EMULATOR_TEST: 1
+          PHOBOS_EMULATOR_TEST: 1
         run: |
           # run the virtual framebuffer
           chmod +x ./install.sh
@@ -71,7 +71,7 @@ jobs:
 
           ./install.sh
 
-          sudo xvfb-run -a -s "-screen 0 1920x1080x24 -ac" sh -c "TORIZON_EMULATOR_TEST=1 ./phobos-emulator-manager & APP_ID=$! && sleep 5s && xwd -root -silent | convert xwd:- screenshot.png && wait $APP_ID; EXIT_CODE=$? && exit $EXIT_CODE"
+          sudo xvfb-run -a -s "-screen 0 1920x1080x24 -ac" sh -c "PHOBOS_EMULATOR_TEST=1 ./phobos-emulator-manager & APP_ID=$! && sleep 5s && xwd -root -silent | convert xwd:- screenshot.png && wait $APP_ID; EXIT_CODE=$? && exit $EXIT_CODE"
 
           # wait for the virtual framebuffer to finish
           APP_EXIT_CODE=$?

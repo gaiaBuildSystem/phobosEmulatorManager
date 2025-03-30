@@ -46,7 +46,7 @@ class App(app_components.AppWindow): # type: ignore
 
 
     def __check_auto_test(self):
-        if "TORIZON_EMULATOR_TEST" in os.environ and os.environ["TORIZON_EMULATOR_TEST"] == "1":
+        if "PHOBOS_EMULATOR_TEST" in os.environ and os.environ["PHOBOS_EMULATOR_TEST"] == "1":
             self.timer.start(
                 TimerMode.SingleShot,
                 timedelta(milliseconds=10000),

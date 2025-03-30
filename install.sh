@@ -5,8 +5,8 @@ echo "📦 Installing PhobOS Emulator Manager ..."
 echo "🔑 we need sudo permissions"
 sudo echo "🔓 sudo permissions granted"
 
-# check if TORIZON_EMULATOR_TEST is set, so we nee to download from source
-if [ -z "$TORIZON_EMULATOR_TEST" ]; then
+# check if PHOBOS_EMULATOR_TEST is set, so we nee to download from source
+if [ -z "$PHOBOS_EMULATOR_TEST" ]; then
     wget -O /tmp/phobos-emulator-manager \
         https://github.com/gaiaBuildSystem/phobosEmulatorManager/releases/latest/download/phobos-emulator-manager
     wget -O /tmp/docker-compose.yml \
@@ -33,9 +33,9 @@ echo "🛜  Pre-downloading the image ..."
 ARCH=$(uname -m)
 
 if [ "$ARCH" == "x86_64" ]; then
-    export TAG="amd64-v2"
+    export TAG="0.0.0.3"
 elif [ "$ARCH" == "aarch64" ]; then
-    export TAG="arm64-v2"
+    export TAG="0.0.0.3"
 else
     echo "❌ Unsupported architecture: $ARCH"
     echo "Please run this script on an x86_64 or aarch64 machine."

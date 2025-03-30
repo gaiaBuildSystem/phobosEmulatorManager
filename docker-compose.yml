@@ -12,7 +12,7 @@ services:
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
-      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
+      - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -35,7 +35,7 @@ services:
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
-      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
+      - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -58,7 +58,7 @@ services:
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
-      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
+      - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -80,7 +80,7 @@ services:
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
-      - TORIZON_EMULATOR_TEST=${TORIZON_EMULATOR_TEST}
+      - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
