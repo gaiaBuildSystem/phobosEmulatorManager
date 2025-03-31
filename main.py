@@ -112,7 +112,7 @@ class App(app_components.AppWindow): # type: ignore
                     RAM={self.ramSize} \
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
-                    docker compose run --rm --service-ports emulator
+                    docker compose run --rm --service-ports -it emulator
                     """
                 )
 

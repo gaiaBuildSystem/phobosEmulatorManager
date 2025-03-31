@@ -32,22 +32,22 @@ if [ -z "$WSL_DISTRO_NAME" ]; then
     if [ -z "$NO_KVM" ]; then
         docker compose \
             -f /opt/phobos-emulator-manager/docker-compose.yml \
-            run -T --rm phobos-emulator-manager
+            run -it --rm phobos-emulator-manager
     else
          docker compose \
             -f /opt/phobos-emulator-manager/docker-compose.yml \
-            run -T --rm phobos-emulator-manager-no-kvm
+            run -it --rm phobos-emulator-manager-no-kvm
     fi
 else
 
     if [ -z "$NO_KVM" ]; then
         docker compose \
             -f /opt/phobos-emulator-manager/docker-compose.yml \
-            run -T --rm phobos-emulator-manager-wsl
+            run -it --rm phobos-emulator-manager-wsl
     else
          docker compose \
             -f /opt/phobos-emulator-manager/docker-compose.yml \
-            run -T --rm phobos-emulator-manager-no-kvm-wsl
+            run -it --rm phobos-emulator-manager-no-kvm-wsl
     fi
 fi
 
