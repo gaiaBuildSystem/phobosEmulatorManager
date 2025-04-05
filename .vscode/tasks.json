@@ -91,7 +91,7 @@
             "command": "docker",
             "options": {
                 "env": {
-                    "TAG": "amd64-v2"
+                    "TAG": "latest"
                 }
             },
             "args": [
@@ -116,7 +116,7 @@
             "command": "docker",
             "options": {
                 "env": {
-                    "TAG": "amd64-v2"
+                    "TAG": "latest"
                 }
             },
             "args": [
