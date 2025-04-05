@@ -9,9 +9,12 @@ import {
     ScrollView,
     LineEdit,
     CheckBox,
-    ProgressIndicator,
     SpinBox
  } from "std-widgets.slint";
+
+import {
+    CustomProgressIndicator
+} from "components/CustomProgressIndicator.slint";
 
 
 export component AppWindow inherits Window {
@@ -229,7 +232,7 @@ export component AppWindow inherits Window {
             HorizontalLayout {
                 alignment: LayoutAlignment.center;
 
-                runnin := ProgressIndicator {
+                runnin := CustomProgressIndicator {
                     width: 400px;
                     height: 40px;
                     indeterminate: true;
