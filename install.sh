@@ -33,9 +33,9 @@ echo "🛜  Pre-downloading the image ..."
 ARCH=$(uname -m)
 
 if [ "$ARCH" == "x86_64" ]; then
-    export TAG="amd64-v2"
+    export TAG="latest"
 elif [ "$ARCH" == "aarch64" ]; then
-    export TAG="arm64-v2"
+    export TAG="latest"
 else
     echo "❌ Unsupported architecture: $ARCH"
     echo "Please run this script on an x86_64 or aarch64 machine."

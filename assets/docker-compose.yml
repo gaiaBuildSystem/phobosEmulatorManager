@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   emulator:
-    image: pergamos/phobos:0.0.0.3
+    image: pergamos/phobos:latest
     privileged: true
     network_mode: host
     init: false
@@ -18,7 +18,7 @@ services:
       - dhcp
 
   dhcp:
-    image: pergamos/phobos:0.0.0.3
+    image: pergamos/phobos:latest
     command:
       - dhcp
     privileged: true
