@@ -11,7 +11,7 @@ services:
       - INSTANCES=${INSTANCES:-1}
       - STORAGE=${STORAGE:-8}
       - RAM=${RAM:-4}
-      - NO_KVM=${NO_KVM}
+      - NO_KVM=${NO_KVM:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
     depends_on:
