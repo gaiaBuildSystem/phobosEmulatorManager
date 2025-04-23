@@ -25,7 +25,7 @@ else
 fi
 
 # make the xhost accessible to the container
-xhost + || true
+xhost + >/dev/null 2>&1 || true
 
 if [ -z "$WSL_DISTRO_NAME" ]; then
 
@@ -52,4 +52,4 @@ else
 fi
 
 # remove the xhost access
-xhost - || true
+xhost - >/dev/null 2>&1 || true
