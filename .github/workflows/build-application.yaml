@@ -72,7 +72,7 @@ jobs:
 
           ./install.sh
 
-          sudo xvfb-run -a -s "-screen 0 1920x1080x24 -ac" sh -c "PHOBOS_EMULATOR_TEST=1 ./phobos-emulator-manager & APP_ID=$! && sleep 10s && xwd -root -silent | convert xwd:- screenshot.png && wait $APP_ID; EXIT_CODE=$? && exit $EXIT_CODE"
+          sudo xvfb-run -a -s "-screen 0 1920x1080x24 -ac" sh -c "PHOBOS_EMULATOR_TEST=1 ./phobos-emulator-manager & APP_ID=$! && sleep 15s && xwd -root -silent | convert xwd:- screenshot.png && wait $APP_ID; EXIT_CODE=$? && exit $EXIT_CODE"
 
           # wait for the virtual framebuffer to finish
           APP_EXIT_CODE=$?
