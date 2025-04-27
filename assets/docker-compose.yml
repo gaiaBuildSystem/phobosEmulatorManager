@@ -28,7 +28,7 @@ services:
       - NO_KVM=${NO_KVM:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ${PHOBOS_LOCAL_IMG_PATH}:/phobos.img
+      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/phobos.img
     depends_on:
       - dhcp
 
