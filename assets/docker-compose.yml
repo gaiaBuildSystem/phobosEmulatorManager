@@ -15,6 +15,23 @@ services:
     depends_on:
       - dhcp
 
+  emulator-debug:
+    image: pergamos/phobos:latest
+    privileged: true
+    network_mode: host
+    init: false
+    environment:
+      - DISPLAY=${DISPLAY:-:1}
+      - INSTANCES=${INSTANCES:-1}
+      - STORAGE=${STORAGE:-8}
+      - RAM=${RAM:-4}
+      - NO_KVM=${NO_KVM:-""}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${PHOBOS_LOCAL_IMG_PATH}:/phobos.img
+    depends_on:
+      - dhcp
+
   dhcp:
     image: pergamos/phobos:latest
     command:

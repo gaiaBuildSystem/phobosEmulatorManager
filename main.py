@@ -88,6 +88,7 @@ class App(app_components.AppWindow): # type: ignore
         self.__pulling = False
         self.__starting = False
         self.__cleaning = False
+        self.__debugging = False
 
         # timer
         self.timer = Timer()
@@ -138,21 +139,44 @@ class App(app_components.AppWindow): # type: ignore
                 self.__executor = concurrent.futures.ThreadPoolExecutor()
                 self.timer.stop()
 
+        if self.__debugging:
+            self.__debugging = False
+            self.__pulling = False
+            self.__starting = True
+            self.runningMessage = "RUNNING ..."
+            self.settled = True
+
+            self.__future = self.exec_bash(
+                    f"""
+                    cd {SCRIPT_PATH}/assets && \
+                    RAM={self.ramSize} \
+                    STORAGE={self.storageSize} \
+                    INSTANCES={self.instances} \
+                    PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
+                    docker compose run --rm --service-ports -it emulator-debug
+                    """
+                )
+
 
     @slint.callback
     def startEmulator(self):
-        self.__pulling = True
-        self.runningMessage = "Downloading emulator image ..."
+        if os.environ['PHOBOS_LOCAL_IMG_PATH'] == "":
+            self.__pulling = True
+            self.runningMessage = "Downloading emulator image ..."
 
-        self.__future = self.exec_bash(
-            f"""
-            cd {SCRIPT_PATH}/assets && \
-            RAM={self.ramSize} \
-            STORAGE={self.storageSize} \
-            INSTANCES={self.instances} \
-            docker compose pull emulator
-            """
-        )
+            self.__future = self.exec_bash(
+                f"""
+                cd {SCRIPT_PATH}/assets && \
+                RAM={self.ramSize} \
+                STORAGE={self.storageSize} \
+                INSTANCES={self.instances} \
+                docker compose pull emulator
+                """
+            )
+        else:
+            # if the PHOBOS_LOCAL_IMG_PATH is set, we are in debug mode
+            # and we need to run the emulator-debug image
+            self.__debugging = True
 
         self.timer.start(
             TimerMode.Repeated,

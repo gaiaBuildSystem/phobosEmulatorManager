@@ -27,6 +27,19 @@ fi
 # make the xhost accessible to the container
 xhost + >/dev/null 2>&1 || true
 
+# check if we are passing an argument
+# if so, the argument need to be a valid file path
+if [ $# -eq 1 ]; then
+    # Check if the provided path is a file and is absolute
+    if [ ! -f "$1" ] || [[ "$1" != /* ]]; then
+        echo "❌ Invalid file path: $1"
+        echo "Please provide a valid absolute file path."
+        exit 69
+    fi
+
+    export PHOBOS_LOCAL_IMG_PATH="$1"
+fi
+
 if [ -z "$WSL_DISTRO_NAME" ]; then
 
     if [ -z "$NO_KVM" ]; then

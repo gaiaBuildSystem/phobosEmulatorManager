@@ -13,6 +13,7 @@ services:
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
+      - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -36,6 +37,7 @@ services:
       - DISPLAY=${DISPLAY}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
+      - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -59,6 +61,7 @@ services:
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
+      - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
@@ -81,6 +84,7 @@ services:
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
+      - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
