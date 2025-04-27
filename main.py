@@ -160,7 +160,7 @@ class App(app_components.AppWindow): # type: ignore
 
     @slint.callback
     def startEmulator(self):
-        if 'PHOBOS_LOCAL_IMG_PATH' not in os.environ or os.environ['PHOBOS_LOCAL_IMG_PATH'] == "":
+        if 'PHOBOS_LOCAL_IMG_PATH' not in os.environ or os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/dev/null":
             self.__pulling = True
             self.runningMessage = "Downloading emulator image ..."
 
