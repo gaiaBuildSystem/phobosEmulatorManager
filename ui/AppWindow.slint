@@ -20,7 +20,7 @@ import {
 export component AppWindow inherits Window {
     in-out property<bool> canCreateInstances : false;
     in-out property<length> Width : 599px;
-    in-out property<length> Height : 679px;
+    in-out property<length> Height : 799px;
     in-out property<int> storageSize : 8;
     in-out property<int> ramSize : 4;
     in-out property<int> instances : 1;
@@ -28,13 +28,48 @@ export component AppWindow inherits Window {
     in-out property<bool> settled : false;
     in-out property<bool> initializing : true;
     in-out property<string> runningMessage : "Running ...";
+    in-out property<string> messageFooterText : "Emulator Manager";
+    in-out property<string> messageFooterLevel : "warn";
     in-out property<int> backDeg : 40;
+    in-out property<[string]> emulatorList : [
+        "Emulator 1",
+        "Emulator 2",
+        "Emulator 3",
+        "Emulator 4",
+        "Emulator 5",
+        "Emulator 6",
+        "Emulator 7",
+        "Emulator 8"
+    ];
     callback startEmulator();
+    callback storeEmulator(emulatorName: string) -> bool;
+    callback rmStoredEmulator(emulatorName: string) -> bool;
+    callback runStoredEmulator(emulatorName: string) -> bool;
+
+    property<bool> _newEmulatorOpen: false;
+    property<bool> _messageFooterOpen: false;
+    property<bool> _listEmulatorsOpen: false;
 
     title: "PhobOS Emulator Manager";
 
     width <=> root.Width;
     height <=> root.Height;
+
+    function _isClickUnderWidget(
+        event: {
+            mouse-x: int, mouse-y: int
+        },
+        widget: {
+            x: int, y: int,
+            width: int, height: int
+        }
+    ) -> bool {
+        if (widget.x < event.mouse-x && widget.x + widget.width > event.mouse-x &&
+            widget.y < event.mouse-y && widget.y + widget.height > event.mouse-y) {
+            return true;
+        }
+        return false;
+    }
 
     Rectangle {
         background: @linear-gradient(backDeg * -1deg, #810c35, #3c0c1d,);
@@ -43,6 +78,43 @@ export component AppWindow inherits Window {
     TouchArea {
         pointer-event => {
             backDeg = ((self.mouse-x / self.height) * 180);
+        }
+        clicked => {
+            if (_newEmulatorOpen && !_isClickUnderWidget({
+                mouse-x: self.mouse-x / 1px,
+                mouse-y: self.mouse-y / 1px
+            }, {
+                x: newEmulator.x / 1px,
+                y: newEmulator.y / 1px,
+                width: newEmulator.width / 1px,
+                height: newEmulator.height / 1px
+            })) {
+                _newEmulatorOpen = false;
+            }
+
+            if (_messageFooterOpen && !_isClickUnderWidget({
+                mouse-x: self.mouse-x / 1px,
+                mouse-y: self.mouse-y / 1px
+            }, {
+                x: messageFooter.x / 1px,
+                y: messageFooter.y / 1px,
+                width: messageFooter.width / 1px,
+                height: messageFooter.height / 1px
+            })) {
+                _messageFooterOpen = false;
+            }
+
+            if (_listEmulatorsOpen && !_isClickUnderWidget({
+                mouse-x: self.mouse-x / 1px,
+                mouse-y: self.mouse-y / 1px
+            }, {
+                x: listEmulators.x / 1px,
+                y: listEmulators.y / 1px,
+                width: listEmulators.width / 1px,
+                height: listEmulators.height / 1px
+            })) {
+                _listEmulatorsOpen = false;
+            }
         }
     }
 
@@ -199,19 +271,41 @@ export component AppWindow inherits Window {
             alignment: LayoutAlignment.center;
             padding-top: 40px;
 
-            buttonStart := Button {
-                text: "START EMULATOR";
-                width: 400px;
-                height: 40px;
-                enabled: storageSize > 0 && ramSize > 0 && instances > 0 && !running && !initializing;
-                clicked => {
-                    running = true;
+            buttons := VerticalBox {
+                buttonStart := Button {
+                    text: "START EMULATOR";
+                    width: 400px;
+                    height: 40px;
+                    enabled: storageSize > 0 && ramSize > 0 && instances > 0 && !running && !initializing && !_newEmulatorOpen && !_listEmulatorsOpen && !_messageFooterOpen;
+                    clicked => {
+                        running = true;
 
-                    if (canCreateInstances == false) {
-                        instances = 1;
+                        if (canCreateInstances == false) {
+                            instances = 1;
+                        }
+
+                        startEmulator();
                     }
+                }
 
-                    startEmulator();
+                buttonRegister := Button {
+                    text: "NEW STORED EMULATOR";
+                    width: 400px;
+                    height: 40px;
+                    enabled: storageSize > 0 && ramSize > 0 && instances > 0 && !running && !initializing && !_newEmulatorOpen && !_listEmulatorsOpen && !_messageFooterOpen;
+                    clicked => {
+                        _newEmulatorOpen = true;
+                    }
+                }
+
+                buttonListEmulators := Button {
+                    text: "LIST EMULATORS";
+                    width: 400px;
+                    height: 40px;
+                    enabled: !_newEmulatorOpen && !running && !initializing;
+                    clicked => {
+                        _listEmulatorsOpen = true;
+                    }
                 }
             }
         }
@@ -236,6 +330,193 @@ export component AppWindow inherits Window {
                     width: 400px;
                     height: 40px;
                     indeterminate: true;
+                }
+            }
+        }
+    }
+
+    // background fade
+    if (_newEmulatorOpen || _messageFooterOpen || _listEmulatorsOpen) :
+    Rectangle {
+        background: @linear-gradient(backDeg * -1deg, #810c35, #3c0c1d,);
+        opacity: 0.5;
+        width: 100%;
+        height: 100%;
+    }
+
+    messageFooter := Rectangle {
+        x: 0px;
+        width: 100%;
+        height: 30%;
+        clip: true;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background: messageFooterLevel == "warn" ? #f0ad4e : messageFooterLevel == "error" ? #d9534f : messageFooterLevel == "success" ? #5cb85c : #5bc0de;
+
+        states [
+            messageFooter-opened when _messageFooterOpen: {
+                messageFooter.y: root.height - (root.height * 0.3);
+            }
+            messageFooter-closed when !_messageFooterOpen: {
+                messageFooter.y: root.height;
+            }
+        ]
+
+        animate y {
+            duration: 500ms;
+            delay: 0s;
+            easing: ease-in-out;
+        }
+
+        VerticalLayout {
+            padding: 20px;
+            spacing: 10px;
+
+            HorizontalLayout {
+                Text {
+                    vertical-alignment: TextVerticalAlignment.center;
+                    text: root.messageFooterText;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+
+    listEmulators := Rectangle {
+        x: 0px;
+        width: 100%;
+        height: 50%;
+        clip: true;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background: #393939;
+
+        states [
+            list-emulators-opened when _listEmulatorsOpen: {
+                listEmulators.y: root.height - (root.height * 0.5);
+            }
+            list-emulators-closed when !_listEmulatorsOpen: {
+                listEmulators.y: root.height;
+            }
+        ]
+
+        animate y {
+            duration: 500ms;
+            delay: 0s;
+            easing: ease-in-out;
+        }
+
+        VerticalLayout {
+            padding: 20px;
+            spacing: 20px;
+            alignment: LayoutAlignment.start;
+
+            HorizontalLayout {
+                Text {
+                    text: "Stored Emulators";
+                    font-size: 20px;
+                }
+            }
+
+            HorizontalLayout {
+                ListView {
+                    width: root.width - 40px;
+                    height: listEmulators.height - 70px;
+                    for emulator in root.emulatorList: Rectangle {
+                        HorizontalBox {
+                            padding: 10px;
+                            spacing: 10px;
+
+                            Text {
+                                text: emulator;
+                                font-size: 15px;
+                            }
+
+                            Button {
+                                width: 50px;
+                                text: "Run";
+                                clicked => {
+                                    runStoredEmulator(emulator);
+                                }
+                            }
+
+                            Button {
+                                width: 80px;
+                                text: "Delete";
+                                clicked => {
+                                    rmStoredEmulator(emulator);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Registered Emulators "form"
+    newEmulator := Rectangle {
+        x: 0px;
+        width: 100%;
+        height: 30%;
+        clip: true;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background: #393939;
+
+        states [
+            new-emulator-opened when _newEmulatorOpen: {
+                newEmulator.y: root.height - (root.height * 0.3);
+            }
+            new-emulator-closed when !_newEmulatorOpen: {
+                newEmulator.y: root.height;
+            }
+        ]
+
+        animate y {
+            duration: 500ms;
+            delay: 0s;
+            easing: ease-in-out;
+        }
+
+        VerticalLayout {
+            padding: 20px;
+            spacing: 10px;
+
+            HorizontalLayout {
+                Text {
+                    text: "New Emulator";
+                    font-size: 20px;
+                }
+            }
+
+            HorizontalLayout {
+                Text {
+                    text: "Emulator Name:";
+                    font-size: 15px;
+                }
+            }
+
+            HorizontalLayout {
+                emulatorNameInput := LineEdit {
+                    height: 40px;
+                }
+            }
+
+            HorizontalLayout {
+                Button {
+                    text: "Save & Run Emulator";
+                    height: 40px;
+                    enabled: emulatorNameInput.text != "" && storageSize > 0 && ramSize > 0 && instances > 0 && !running && !initializing;
+                    clicked => {
+                        if(storeEmulator(emulatorNameInput.text)) {
+                            _newEmulatorOpen = false;
+                            runStoredEmulator(emulatorNameInput.text);
+                        } else {
+                            _newEmulatorOpen = false;
+                            _messageFooterOpen = true;
+                        }
+                    }
                 }
             }
         }
