@@ -10,8 +10,10 @@ services:
       - STORAGE=${STORAGE:-8}
       - RAM=${RAM:-4}
       - NO_KVM=${NO_KVM:-""}
+      - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${HOME}/.pem/:/pem
     depends_on:
       - dhcp
 

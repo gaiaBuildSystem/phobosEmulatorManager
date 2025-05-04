@@ -1,8 +1,9 @@
 import os
+import json
 import subprocess
 import concurrent.futures
 import slint # type: ignore
-from slint import Timer, TimerMode
+from slint import Timer, TimerMode # type: ignore
 from datetime import timedelta
 
 # get the script path
@@ -56,7 +57,7 @@ class App(app_components.AppWindow): # type: ignore
 
     def __on_load(self):
         self.Width = 600
-        self.Height = 700
+        self.Height = 800
 
         self.timer.start(
             TimerMode.SingleShot,
@@ -70,13 +71,17 @@ class App(app_components.AppWindow): # type: ignore
 
         self.canCreateInstances = False
         self.Width = 599
-        self.Height = 679
+        self.Height = 779
         self.storageSize = 8
         self.ramSize = 4
         self.instances = 1
         self.running = False
         self.settled = False
         self.runningMessage = "Running ..."
+        self.messageFooterText = "Emulator is not running"
+        self.messageFooterLevel = "warn"
+        self.emulatorList = slint.ListModel([])
+        self._emulatorList = []
         self.backDeg = 40
         # Slint public function
         self.__init = getattr(self, "__init")
@@ -89,6 +94,14 @@ class App(app_components.AppWindow): # type: ignore
         self.__starting = False
         self.__cleaning = False
         self.__debugging = False
+
+        # let's already populate the emulator list
+        if os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json")):
+            with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r") as f:
+                data = json.load(f)
+                for key in data.keys():
+                    self._emulatorList.append(key)
+                    self.emulatorList = slint.ListModel(self._emulatorList)
 
         # timer
         self.timer = Timer()
@@ -183,6 +196,114 @@ class App(app_components.AppWindow): # type: ignore
             timedelta(milliseconds=500),
             self.__status_handle
         )
+
+
+    @slint.callback
+    def runStoredEmulator(self, name: str) -> bool:
+        print(f"Running stored emulator with name [{name}] ...")
+
+        self.__pulling = True
+        self.runningMessage = "Downloading emulator image ..."
+
+        self.__future = self.exec_bash(
+            f"""
+            cd {SCRIPT_PATH}/assets && \
+            RAM={self.ramSize} \
+            STORAGE={self.storageSize} \
+            INSTANCES={self.instances} \
+            USER_VM_NAME={name} \
+            docker compose pull emulator
+            """
+        )
+
+        self.timer.start(
+            TimerMode.Repeated,
+            timedelta(milliseconds=500),
+            self.__status_handle
+        )
+
+        return True
+
+
+    @slint.callback
+    def storeEmulator(self, name: str) -> bool:
+        print(f"Storing emulator image [{name}] ...")
+
+        # multiple instances cannot be stored
+        if self.instances > 1:
+            print("Multiple instances cannot be stored.")
+            self.messageFooterLevel = "error"
+            self.messageFooterText = "Multiple instances cannot be stored."
+            return False
+
+        # if the HOME/.pem/ does not exists create it
+        if not os.path.exists(os.path.join(os.path.expanduser("~"), ".pem")):
+            os.makedirs(os.path.join(os.path.expanduser("~"), ".pem"))
+
+        # check if the HOME/.pem/emulators.json file exists
+        if not os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json")):
+            # create the file
+            with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "w") as f:
+                f.write("{}\n")
+
+        # read the file
+        with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r+") as f:
+            data = json.load(f)
+            # check if the name already exists
+            for key in data.keys():
+                if key == name:
+                    print(f"Emulator image [{name}] already exists.")
+                    self.messageFooterLevel = "error"
+                    self.messageFooterText = f"Emulator image with name [{name}] already exists."
+                    return False
+
+            # ok seems like we are good to go
+            # store it as a new entry
+            data[name] = {
+                "storage": self.storageSize,
+                "ram": self.ramSize
+            }
+
+            # write the file
+            f.seek(0)
+            f.write(json.dumps(data, indent=4))
+            f.truncate()
+            print(f"Emulator image [{name}] stored.")
+            self._emulatorList.append(name)
+            self.emulatorList = slint.ListModel(self._emulatorList)
+
+            # check if the emulator is already running'
+            self.runStoredEmulator(name)
+
+        return True
+
+
+    @slint.callback
+    def rmStoredEmulator(self, name: str) -> bool:
+        print(f"Removing stored emulator with name [{name}]")
+
+        for i, item in enumerate(self._emulatorList):
+            if item == name:
+                # remove it from the json
+                with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r+") as f:
+                    data = json.load(f)
+                    del data[name]
+                    # write it back
+                    f.seek(0)
+                    f.write(json.dumps(data, indent=4))
+                    f.truncate()
+                    print(f"Emulator image [{name}] removed.")
+                    del self._emulatorList[i]
+                    self.emulatorList = slint.ListModel(self._emulatorList)
+
+                # also remove the ~/.pem/phobos-name.img file
+                if os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", f"phobos-{name}.img")):
+                    os.remove(os.path.join(os.path.expanduser("~"), ".pem", f"phobos-{name}.img"))
+                    print(f"Emulator image file [{name}] removed.")
+
+                return True
+
+        return False
 
 
 # instantiate the app and start the event loop
