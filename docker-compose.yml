@@ -14,11 +14,13 @@ services:
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
+      - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
       - /run:/run
       - /var:/var
+      - ${HOME}/.pem/:/root/pem
     pid: host
     network_mode: host
     privileged: true
@@ -38,12 +40,14 @@ services:
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
+      - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/wsl/docker.sock:/var/run/docker.sock
       - /run:/run
       - /var:/var
+      - ${HOME}/.pem/:/root/pem
     pid: host
     network_mode: host
     privileged: true
@@ -62,11 +66,13 @@ services:
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
+      - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
       - /run:/run
       - /var:/var
+      - ${HOME}/.pem/:/root/pem
     pid: host
     network_mode: host
     privileged: true
@@ -85,12 +91,14 @@ services:
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
+      - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/wsl/docker.sock:/var/run/docker.sock
       - /run:/run
       - /var:/var
+      - ${HOME}/.pem/:/root/pem
     pid: host
     network_mode: host
     privileged: true
