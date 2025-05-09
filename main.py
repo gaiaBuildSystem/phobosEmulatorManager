@@ -95,6 +95,9 @@ class App(app_components.AppWindow): # type: ignore
         self.__cleaning = False
         self.__debugging = False
 
+        # when setting the emulator name
+        self.__emulatorName = None
+
         # let's already populate the emulator list
         if os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json")):
             with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r") as f:
@@ -126,6 +129,7 @@ class App(app_components.AppWindow): # type: ignore
                     RAM={self.ramSize} \
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
+                    USER_VM_NAME={self.__emulatorName} \
                     docker compose run --rm --service-ports -it emulator
                     """
                 )
@@ -183,6 +187,7 @@ class App(app_components.AppWindow): # type: ignore
                 RAM={self.ramSize} \
                 STORAGE={self.storageSize} \
                 INSTANCES={self.instances} \
+                USER_VM_NAME={self.__emulatorName} \
                 docker compose pull emulator
                 """
             )
@@ -201,6 +206,7 @@ class App(app_components.AppWindow): # type: ignore
     @slint.callback
     def runStoredEmulator(self, name: str) -> bool:
         print(f"Running stored emulator with name [{name}] ...")
+        self.__emulatorName = name
 
         self.__pulling = True
         self.runningMessage = "Downloading emulator image ..."
@@ -211,7 +217,7 @@ class App(app_components.AppWindow): # type: ignore
             RAM={self.ramSize} \
             STORAGE={self.storageSize} \
             INSTANCES={self.instances} \
-            USER_VM_NAME={name} \
+            USER_VM_NAME={self.__emulatorName} \
             docker compose pull emulator
             """
         )
@@ -271,9 +277,6 @@ class App(app_components.AppWindow): # type: ignore
             print(f"Emulator image [{name}] stored.")
             self._emulatorList.append(name)
             self.emulatorList = slint.ListModel(self._emulatorList)
-
-            # check if the emulator is already running'
-            self.runStoredEmulator(name)
 
         return True
 
