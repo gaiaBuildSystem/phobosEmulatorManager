@@ -81,6 +81,7 @@ class App(app_components.AppWindow): # type: ignore
         self.messageFooterText = "Emulator is not running"
         self.messageFooterLevel = "warn"
         self.emulatorList = slint.ListModel([])
+        self._emulatorList = []
         self.backDeg = 40
         # Slint public function
         self.__init = getattr(self, "__init")
@@ -99,7 +100,8 @@ class App(app_components.AppWindow): # type: ignore
             with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r") as f:
                 data = json.load(f)
                 for key in data.keys():
-                    self.emulatorList.append(key)
+                    self._emulatorList.append(key)
+                    self.emulatorList = slint.ListModel(self._emulatorList)
 
         # timer
         self.timer = Timer()
@@ -247,7 +249,9 @@ class App(app_components.AppWindow): # type: ignore
             f.write(json.dumps(data, indent=4))
             f.truncate()
             print(f"Emulator image [{name}] stored.")
-            self.emulatorList.append(name)
+            self._emulatorList.append(name)
+            self.emulatorList = slint.ListModel(self._emulatorList)
+
 
         return True
 
@@ -256,7 +260,7 @@ class App(app_components.AppWindow): # type: ignore
     def rmStoredEmulator(self, name: str) -> bool:
         print(f"Removing stored emulator with name [{name}]")
 
-        for i, item in enumerate(self.emulatorList):
+        for i, item in enumerate(self._emulatorList):
             if item == name:
                 # remove it from the json
                 with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r+") as f:
@@ -267,7 +271,8 @@ class App(app_components.AppWindow): # type: ignore
                     f.write(json.dumps(data, indent=4))
                     f.truncate()
                     print(f"Emulator image [{name}] removed.")
-                    del self.emulatorList[i]
+                    del self._emulatorList[i]
+                    self.emulatorList = slint.ListModel(self._emulatorList)
 
                 return True
 
