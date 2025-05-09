@@ -24,6 +24,11 @@ else
     exit 1
 fi
 
+# make to sure that we have ~/.pem folder
+if [ ! -d ~/.pem ]; then
+    mkdir ~/.pem
+fi
+
 # make the xhost accessible to the container
 xhost + >/dev/null 2>&1 || true
 

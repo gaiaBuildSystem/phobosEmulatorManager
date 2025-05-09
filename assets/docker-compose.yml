@@ -13,7 +13,7 @@ services:
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - /root/.pem/:/pem
+      - /root/.pem/:/root/.pem
     depends_on:
       - dhcp
 
