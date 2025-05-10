@@ -80,7 +80,8 @@ class App(app_components.AppWindow): # type: ignore
         self.runningMessage = "Running ..."
         self.messageFooterText = "Emulator is not running"
         self.messageFooterLevel = "warn"
-        self.emulatorList = slint.ListModel([])
+        self.emulatorList = slint.ListModel(["t1"])
+        del self.emulatorList[0]
         self.backDeg = 40
         # Slint public function
         self.__init = getattr(self, "__init")
@@ -282,7 +283,7 @@ class App(app_components.AppWindow): # type: ignore
     def rmStoredEmulator(self, name: str) -> bool:
         print(f"Removing stored emulator with name [{name}]")
 
-        for i, item in enumerate(self._emulatorList):
+        for i, item in enumerate(self.emulatorList):
             if item == name:
                 # remove it from the json
                 with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r+") as f:

@@ -31,16 +31,7 @@ export component AppWindow inherits Window {
     in-out property<string> messageFooterText : "Emulator Manager";
     in-out property<string> messageFooterLevel : "warn";
     in-out property<int> backDeg : 40;
-    in-out property<[string]> emulatorList : [
-        "Emulator 1",
-        "Emulator 2",
-        "Emulator 3",
-        "Emulator 4",
-        "Emulator 5",
-        "Emulator 6",
-        "Emulator 7",
-        "Emulator 8"
-    ];
+    in-out property<[string]> emulatorList : [];
     callback startEmulator();
     callback storeEmulator(emulatorName: string) -> bool;
     callback rmStoredEmulator(emulatorName: string) -> bool;
