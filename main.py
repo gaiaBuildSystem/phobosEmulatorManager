@@ -204,7 +204,7 @@ class App(app_components.AppWindow): # type: ignore
 
 
     @slint.callback
-    def runStoredEmulator(self, name: str) -> bool:
+    def runStoredEmulator(self, name: str):
         print(f"Running stored emulator with name [{name}] ...")
         self.__emulatorName = name
 

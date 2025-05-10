@@ -44,7 +44,7 @@ export component AppWindow inherits Window {
     callback startEmulator();
     callback storeEmulator(emulatorName: string) -> bool;
     callback rmStoredEmulator(emulatorName: string) -> bool;
-    callback runStoredEmulator(emulatorName: string) -> bool;
+    callback runStoredEmulator(emulatorName: string);
 
     property<bool> _newEmulatorOpen: false;
     property<bool> _messageFooterOpen: false;
@@ -535,6 +535,8 @@ export component AppWindow inherits Window {
                     clicked => {
                         if(storeEmulator(emulatorNameInput.text)) {
                             _newEmulatorOpen = false;
+                            emulatorNameInput.text = "";
+                            running = true;
                             runStoredEmulator(emulatorNameInput.text);
                         } else {
                             _newEmulatorOpen = false;
