@@ -90,6 +90,9 @@ COPY ./uv.lock /home/torizon
 # "cd" (enter) into the APP_ROOT directory
 WORKDIR /home/torizon
 
+# Add pipx binary path to PATH
+ENV PATH="/root/.local/bin:$PATH"
+
 # "install"
 RUN pipx install uv && \
     uv sync
