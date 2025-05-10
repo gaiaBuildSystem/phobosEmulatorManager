@@ -535,9 +535,9 @@ export component AppWindow inherits Window {
                     clicked => {
                         if(storeEmulator(emulatorNameInput.text)) {
                             _newEmulatorOpen = false;
-                            emulatorNameInput.text = "";
                             running = true;
                             runStoredEmulator(emulatorNameInput.text);
+                            emulatorNameInput.text = "";
                         } else {
                             _newEmulatorOpen = false;
                             _messageFooterOpen = true;

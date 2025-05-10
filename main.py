@@ -81,7 +81,6 @@ class App(app_components.AppWindow): # type: ignore
         self.messageFooterText = "Emulator is not running"
         self.messageFooterLevel = "warn"
         self.emulatorList = slint.ListModel([])
-        self._emulatorList = []
         self.backDeg = 40
         # Slint public function
         self.__init = getattr(self, "__init")
@@ -103,8 +102,7 @@ class App(app_components.AppWindow): # type: ignore
             with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r") as f:
                 data = json.load(f)
                 for key in data.keys():
-                    self._emulatorList.append(key)
-                    self.emulatorList = slint.ListModel(self._emulatorList)
+                    self.emulatorList.append(key)
 
         # timer
         self.timer = Timer()
@@ -275,8 +273,7 @@ class App(app_components.AppWindow): # type: ignore
             f.write(json.dumps(data, indent=4))
             f.truncate()
             print(f"Emulator image [{name}] stored.")
-            self._emulatorList.append(name)
-            self.emulatorList = slint.ListModel(self._emulatorList)
+            self.emulatorList.append(name)
 
         return True
 
@@ -296,8 +293,7 @@ class App(app_components.AppWindow): # type: ignore
                     f.write(json.dumps(data, indent=4))
                     f.truncate()
                     print(f"Emulator image [{name}] removed.")
-                    del self._emulatorList[i]
-                    self.emulatorList = slint.ListModel(self._emulatorList)
+                    del self.emulatorList[i]
 
                 # also remove the ~/.pem/phobos-name.img file
                 if os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", f"phobos-{name}.img")):

@@ -42,6 +42,7 @@ RUN apt-get -q -y update && \
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
     apt-get install \
+    wget \
     libicu72 \
     zlib1g \
     unzip \
@@ -57,7 +58,7 @@ RUN apt-get update \
     xkb-data \
     python3 \
     python3-pip \
-    pipenv \
+    pipx \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
@@ -82,18 +83,23 @@ ENV SLINT_STYLE=fluent-dark
 COPY ./ui /home/torizon/ui
 COPY ./assets /home/torizon/assets
 COPY ./main.py /home/torizon
-COPY ./Pipfile /home/torizon
-COPY ./Pipfile.lock /home/torizon
+COPY ./.python-version /home/torizon
+COPY ./pyproject.toml /home/torizon
+COPY ./uv.lock /home/torizon
 
 # "cd" (enter) into the APP_ROOT directory
 WORKDIR /home/torizon
 
 # "install"
-RUN pipenv sync
+RUN pipx install uv && \
+    uv sync
 
 USER root
 
+ENV VIRTUAL_ENV="/home/torizon/.venv"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 # Command executed in runtime when the container starts
-CMD ["pipenv", "run", "python", "main.py"]
+CMD ["python", "main.py"]
 
 # DEPLOY ------------------------------------------------------------------------
