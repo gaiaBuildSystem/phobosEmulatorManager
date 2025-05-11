@@ -19,30 +19,18 @@ ARG GPU=
 
 # DEPLOY ------------------------------------------------------------------------
 FROM --platform=linux/${IMAGE_ARCH} \
-    torizon/wayland-base${GPU}:${BASE_VERSION} AS Deploy
+    debian:bookworm AS Deploy
 
 ARG IMAGE_ARCH
 ARG GPU
-
-# for vivante GPU we need some "special" sauce
-RUN apt-get -q -y update && \
-        if [ "${GPU}" = "-vivante" ] || [ "${GPU}" = "-imx8" ]; then \
-            apt-get -q -y install \
-            imx-gpu-viv-wayland-dev \
-        ; else \
-            apt-get -q -y install \
-            libgl1 \
-        ; fi \
-    && \
-    apt-get clean && apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/*
 
 # Install Slint dependencies
 # Install Slint and .net dependencies
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive \
-    apt-get install \
+    apt-get install -y \
     wget \
+    libgl1 \
     libicu72 \
     zlib1g \
     unzip \
