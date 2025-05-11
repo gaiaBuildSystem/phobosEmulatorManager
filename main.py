@@ -3,7 +3,7 @@ import json
 import subprocess
 import concurrent.futures
 import slint # type: ignore
-from slint import Timer, TimerMode # type: ignore
+from slint import Timer, TimerMode, ListModel # type: ignore
 from datetime import timedelta
 
 # get the script path
@@ -34,6 +34,18 @@ class App(app_components.AppWindow): # type: ignore
     def ___init(self):
         # we are good to go
         self.__init()
+
+        # for some reason the ListModel does not work
+        # if early initialized
+        # so we need to do it here
+        self.emulatorList = ListModel([])
+
+        # let's already populate the emulator list
+        if os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json")):
+            with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r") as f:
+                data = json.load(f)
+                for key in data.keys():
+                    self.emulatorList.append(key)
 
         self.timer.start(
             TimerMode.SingleShot,
@@ -80,8 +92,6 @@ class App(app_components.AppWindow): # type: ignore
         self.runningMessage = "Running ..."
         self.messageFooterText = "Emulator is not running"
         self.messageFooterLevel = "warn"
-        self.emulatorList = slint.ListModel(["t1"])
-        del self.emulatorList[0]
         self.backDeg = 40
         # Slint public function
         self.__init = getattr(self, "__init")
@@ -97,13 +107,6 @@ class App(app_components.AppWindow): # type: ignore
 
         # when setting the emulator name
         self.__emulatorName = None
-
-        # let's already populate the emulator list
-        if os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json")):
-            with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r") as f:
-                data = json.load(f)
-                for key in data.keys():
-                    self.emulatorList.append(key)
 
         # timer
         self.timer = Timer()
