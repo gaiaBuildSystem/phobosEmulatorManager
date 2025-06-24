@@ -12,10 +12,11 @@ services:
       - NO_KVM=${NO_KVM:-""}
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp:/tmp
       - /root/.pem/:/root/.pem
     depends_on:
       - dhcp
+      - tpm2
 
   emulator-debug:
     image: pergamos/phobos:latest
@@ -33,6 +34,7 @@ services:
       - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/phobos.img
     depends_on:
       - dhcp
+      - tpm2
 
   dhcp:
     image: pergamos/phobos:latest
@@ -41,3 +43,13 @@ services:
     privileged: true
     network_mode: host
     init: false
+
+  tpm2:
+    image: pergamos/phobos:latest
+    command:
+      - tpm2
+    privileged: true
+    network_mode: host
+    init: false
+    volumes:
+      - /tmp:/tmp
