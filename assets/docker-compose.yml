@@ -30,7 +30,7 @@ services:
       - RAM=${RAM:-4}
       - NO_KVM=${NO_KVM:-""}
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp:/tmp
       - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/phobos.img
     depends_on:
       - dhcp

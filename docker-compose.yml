@@ -16,7 +16,7 @@ services:
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
       - /run:/run
       - /var:/var
@@ -42,7 +42,7 @@ services:
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/wsl/docker.sock:/var/run/docker.sock
       - /run:/run
@@ -68,7 +68,7 @@ services:
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
       - /run:/run
       - /var:/var
@@ -93,7 +93,7 @@ services:
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/wsl/docker.sock:/var/run/docker.sock
       - /run:/run
