@@ -112,8 +112,8 @@ export component AppWindow inherits Window {
     public function __init() {
         debug("Initializing ...");
         vmLogo.opacity = 0.6;
-        vmLogo.padding-right = 5px;
-        phobosLogo.opacity = 0.6;
+        vmLogo.padding-right = -50px;
+        phobosLogo.opacity = 0.8;
         initializing = false;
     }
 
@@ -134,7 +134,7 @@ export component AppWindow inherits Window {
 
             vmLogo := HorizontalBox {
                 padding-top: -8px;
-                padding-right: -40px;
+                padding-right: -90px;
                 padding-left: -2px;
                 opacity: 0;
 
@@ -159,14 +159,14 @@ export component AppWindow inherits Window {
 
             phobosLogo := HorizontalBox {
                 padding-right: 10px;
-                padding-top: 18px;
-                padding-left: 10px;
+                padding-top: 0px;
+                padding-left: 55px;
                 opacity: 0;
 
                 Image {
-                    source: @image-url("./assets/phoboslogoWhite.png");
-                    width: 410px * 0.7;
-                    height: 81px * 0.7;
+                    source: @image-url("./assets/logoABitWhite.png");
+                    width: 555px * 0.5;
+                    height: 193px * 0.5;
                 }
 
                 animate opacity  {
