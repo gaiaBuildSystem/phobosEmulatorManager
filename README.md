@@ -1,6 +1,6 @@
 # PhobOS Emulator Manager
 
-![alt text](.doc/screenshot.png)
+![alt text](.doc/image.png)
 
 The PhobOS Emulator Manager is a graphical user interface that allows you to configure resources and run virtual machines that run PhobOS. The PhobOS Emulator Manager is based on the QEMU emulator and runs inside a Docker container with the necessary dependencies and leveraging the Docker bridge network to communicate with the external world.
 
@@ -23,3 +23,11 @@ To test fleet of devices, you can run multiple instances of the PhobOS. Check th
 
 > [!WARNING]
 > Running multiple instances may require a lot of resources from your host machine. Make sure you have enough resources available. The manager will allocate the same amount of resources configured in the `Storage Size` and `RAM Size`fields for each instance.
+
+## Running a local PhobOS image
+
+PhobOS emulator manager uses images that comes embedded in the container image by default. If you want to run a local PhobOS image, you can do so by specifying the absolute path to the image as argument for the command `phobos-emulator-manager`. For example:
+
+```bash
+phobos-emulator-manager /path/to/your/phobos-image.img
+```
