@@ -1,5 +1,41 @@
 #!/bin/bash
 
+echo "🔍 Checking for required dependencies ..."
+
+_WGET_OK=1
+_DOCKER_OK=1
+_DOCKER_COMPOSE_OK=0
+_DEP_MISSING=0
+
+# check for wget
+if ! command -v wget &> /dev/null; then
+    _WGET_OK=0
+    _DEP_MISSING=1
+fi
+
+# check for docker
+if ! command -v docker &> /dev/null; then
+    _DOCKER_OK=0
+    _DEP_MISSING=1
+fi
+
+# check for docker compose plugin
+if docker compose version &>/dev/null; then
+    _DOCKER_COMPOSE_OK=1
+else
+    _DEP_MISSING=1
+fi
+
+# now list for user if some dependencies are missing
+echo "wget is $([[ $_WGET_OK -eq 1 ]] && echo "ok" || echo "not ok")"
+echo "docker is $([[ $_DOCKER_OK -eq 1 ]] && echo "ok" || echo "not ok")"
+echo "docker compose is $([[ $_DOCKER_COMPOSE_OK -eq 1 ]] && echo "ok" || echo "not ok")"
+
+if [ $_DEP_MISSING -eq 1 ]; then
+    echo "❌ Some dependencies are missing. Please install them before running this script."
+    exit 69
+fi
+
 echo "📦 Installing PhobOS Emulator Manager ..."
 
 echo "🔑 we need sudo permissions"
