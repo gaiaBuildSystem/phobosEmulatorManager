@@ -53,3 +53,14 @@ services:
     init: false
     volumes:
       - /tmp:/tmp
+
+  image-download:
+    image: pergamos/phobos:latest
+    command:
+      - image-download
+    privileged: true
+    network_mode: host
+    init: false
+    volumes:
+      - /tmp:/tmp
+      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/phobos.img

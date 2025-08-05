@@ -197,9 +197,25 @@ class App(app_components.AppWindow): # type: ignore
                 """
             )
         else:
-            # if the PHOBOS_LOCAL_IMG_PATH is set, we are in debug mode
-            # and we need to run the emulator-debug image
-            self.__debugging = True
+            # if the PHOBOS_LOCAL_IMG_PATH is the default path
+            # we need to donwload it anyway
+            if os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/opt/phobos-emulator/phobos.img":
+                self.__pulling = True
+
+                self.__future = self.exec_bash(
+                    f"""
+                    cd {SCRIPT_PATH}/assets && \
+                    RAM={self.ramSize} \
+                    STORAGE={self.storageSize} \
+                    INSTANCES={self.instances} \
+                    USER_VM_NAME={self.__emulatorName} \
+                    docker compose run --rm --service-ports -it image-download
+                    """
+                )
+            else:
+                # if the PHOBOS_LOCAL_IMG_PATH is set, we are in debug mode
+                # and we need to run the emulator-debug image
+                self.__debugging = True
 
         self.timer.start(
             TimerMode.Repeated,
