@@ -83,7 +83,7 @@ docker compose -f /opt/phobos-emulator-manager/docker-compose.yml pull
 if [ ! -f /opt/phobos-emulator-manager/phobos.img ]; then
     # there was never a phobos.img
     # so, make a placeholder file
-    touch /opt/phobos-emulator-manager/phobos.img
+    sudo touch /opt/phobos-emulator-manager/phobos.img
 fi
 
 echo "🎉 PhobOS Emulator Manager installed successfully!"
