@@ -44,12 +44,6 @@ if [ $# -eq 1 ]; then
 
     export PHOBOS_LOCAL_IMG_PATH="$1"
 else
-    if [ ! -f /phobos.img ]; then
-        # there was never a phobos.img
-        # so, make a placeholder file
-        touch /opt/phobos-emulator-manager/phobos.img
-    fi
-
     # if no argument is passed, we use the default path
     export PHOBOS_LOCAL_IMG_PATH="/opt/phobos-emulator-manager/phobos.img"
 fi
