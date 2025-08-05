@@ -2,6 +2,8 @@ import os
 import json
 import subprocess
 import concurrent.futures
+from typing import Optional
+from concurrent.futures import Future
 import slint # type: ignore
 from slint import Timer, TimerMode, ListModel # type: ignore
 from datetime import timedelta
@@ -45,7 +47,8 @@ class App(app_components.AppWindow): # type: ignore
             with open(os.path.join(os.path.expanduser("~"), ".pem", "emulators.json"), "r") as f:
                 data = json.load(f)
                 for key in data.keys():
-                    self.emulatorList.append(key)
+                    # type ignore because the ListModel from slint is not typed
+                    self.emulatorList.append(key) # type: ignore
 
         self.timer.start(
             TimerMode.SingleShot,
@@ -97,7 +100,7 @@ class App(app_components.AppWindow): # type: ignore
         self.__init = getattr(self, "__init")
 
         # for futures
-        self.__future = None
+        self.__future: Optional[Future[subprocess.CompletedProcess[bytes]]] = None
         self.__executor = concurrent.futures.ThreadPoolExecutor()
         # status flags
         self.__pulling = False
@@ -119,7 +122,7 @@ class App(app_components.AppWindow): # type: ignore
 
     def __status_handle(self):
         if self.__pulling:
-            if self.__future.done():
+            if self.__future != None and self.__future.done():
                 self.__pulling = False
                 self.__starting = True
                 self.runningMessage = "RUNNING ..."
@@ -137,7 +140,7 @@ class App(app_components.AppWindow): # type: ignore
                 )
 
         if self.__starting:
-            if self.__future.done():
+            if self.__future != None and self.__future.done():
                 self.__starting = False
                 self.__cleaning = True
                 self.settled = False
@@ -151,7 +154,7 @@ class App(app_components.AppWindow): # type: ignore
                 )
 
         if self.__cleaning:
-            if self.__future.done():
+            if self.__future != None and self.__future.done():
                 self.__cleaning = False
                 self.running = False
                 self.__executor.shutdown()
@@ -177,7 +180,7 @@ class App(app_components.AppWindow): # type: ignore
                 )
 
 
-    @slint.callback
+    @slint.callback # type: ignore
     def startEmulator(self):
         if 'PHOBOS_LOCAL_IMG_PATH' not in os.environ or os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/dev/null":
             self.__pulling = True
@@ -205,7 +208,7 @@ class App(app_components.AppWindow): # type: ignore
         )
 
 
-    @slint.callback
+    @slint.callback # type: ignore
     def runStoredEmulator(self, name: str):
         print(f"Running stored emulator with name [{name}] ...")
         self.__emulatorName = name
@@ -233,7 +236,7 @@ class App(app_components.AppWindow): # type: ignore
         return True
 
 
-    @slint.callback
+    @slint.callback # type: ignore
     def storeEmulator(self, name: str) -> bool:
         print(f"Storing emulator image [{name}] ...")
 
@@ -277,12 +280,12 @@ class App(app_components.AppWindow): # type: ignore
             f.write(json.dumps(data, indent=4))
             f.truncate()
             print(f"Emulator image [{name}] stored.")
-            self.emulatorList.append(name)
+            self.emulatorList.append(name) # type: ignore
 
         return True
 
 
-    @slint.callback
+    @slint.callback # type: ignore
     def rmStoredEmulator(self, name: str) -> bool:
         print(f"Removing stored emulator with name [{name}]")
 
@@ -297,7 +300,7 @@ class App(app_components.AppWindow): # type: ignore
                     f.write(json.dumps(data, indent=4))
                     f.truncate()
                     print(f"Emulator image [{name}] removed.")
-                    del self.emulatorList[i]
+                    del self.emulatorList[i] # type: ignore
 
                 # also remove the ~/.pem/phobos-name.img file
                 if os.path.exists(os.path.join(os.path.expanduser("~"), ".pem", f"phobos-{name}.img")):
