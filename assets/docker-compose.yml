@@ -11,10 +11,10 @@ services:
       - RAM=${RAM:-4}
       - NO_KVM=${NO_KVM:-""}
       - USER_VM_NAME=${USER_VM_NAME:-""}
-      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host
     volumes:
       - /tmp:/tmp
       - /root/.pem/:/root/.pem
+      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host
     depends_on:
       - dhcp
       - tpm2
