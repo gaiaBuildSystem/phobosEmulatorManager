@@ -200,7 +200,7 @@ class App(app_components.AppWindow): # type: ignore
         else:
             # if the PHOBOS_LOCAL_IMG_PATH is the default path
             # we need to donwload it anyway
-            if os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/opt/phobos-emulator":
+            if os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/opt/phobos-emulator-manager":
                 self.__pulling = True
                 self.runningMessage = "Downloading emulator image ..."
 
