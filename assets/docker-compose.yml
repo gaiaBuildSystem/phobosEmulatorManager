@@ -11,6 +11,7 @@ services:
       - RAM=${RAM:-4}
       - NO_KVM=${NO_KVM:-""}
       - USER_VM_NAME=${USER_VM_NAME:-""}
+      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host
     volumes:
       - /tmp:/tmp
       - /root/.pem/:/root/.pem
@@ -29,9 +30,10 @@ services:
       - STORAGE=${STORAGE:-8}
       - RAM=${RAM:-4}
       - NO_KVM=${NO_KVM:-""}
+      - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp:/tmp
-      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/phobos.img
+      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host/phobos.img
     depends_on:
       - dhcp
       - tpm2
@@ -63,4 +65,4 @@ services:
     init: false
     volumes:
       - /tmp:/tmp
-      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/phobos.img
+      - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host

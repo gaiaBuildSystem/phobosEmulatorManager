@@ -135,6 +135,7 @@ class App(app_components.AppWindow): # type: ignore
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
                     USER_VM_NAME={self.__emulatorName} \
+                    PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
                     docker compose run --rm --service-ports -it emulator
                     """
                 )
@@ -199,8 +200,9 @@ class App(app_components.AppWindow): # type: ignore
         else:
             # if the PHOBOS_LOCAL_IMG_PATH is the default path
             # we need to donwload it anyway
-            if os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/opt/phobos-emulator/phobos.img":
+            if os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/opt/phobos-emulator":
                 self.__pulling = True
+                self.runningMessage = "Downloading emulator image ..."
 
                 self.__future = self.exec_bash(
                     f"""
