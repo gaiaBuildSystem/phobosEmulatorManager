@@ -211,6 +211,11 @@ class App(app_components.AppWindow): # type: ignore
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
                     USER_VM_NAME={self.__emulatorName} \
+                    docker compose pull emulator && \
+                    RAM={self.ramSize} \
+                    STORAGE={self.storageSize} \
+                    INSTANCES={self.instances} \
+                    USER_VM_NAME={self.__emulatorName} \
                     docker compose run --rm --service-ports -it image-download
                     """
                 )
