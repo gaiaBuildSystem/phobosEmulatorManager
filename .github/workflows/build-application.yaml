@@ -61,6 +61,19 @@ jobs:
           xonsh ./.vscode/tasks.xsh run docker-login
           xonsh ./.vscode/tasks.xsh run push-docker-image-amd64
 
+      - name: Build arm64
+        shell: xonsh {0}
+        env:
+          DOCKER_PSSWD: ${{ secrets.DOCKER_PSSWD }}
+        run: |
+          $UPDATE_OS_ENVIRON = True
+          $XONSH_SHOW_TRACEBACK = True
+          $RAISE_SUBPROC_ERROR = True
+
+          xonsh ./.vscode/tasks.xsh run build-docker-image-arm64
+          xonsh ./.vscode/tasks.xsh run docker-login
+          xonsh ./.vscode/tasks.xsh run push-docker-image-arm64
+
       - name: Test
         shell: bash
         env:
