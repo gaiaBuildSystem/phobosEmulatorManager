@@ -1,4 +1,4 @@
-name: Build & Deploy PhobOS Emu
+name: Build & Deploy PhobOS Emu Arm64
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-deploy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     name: Build & Deploy
     env:
       RUST_BACKTRACE: 1
@@ -48,7 +48,7 @@ jobs:
 
           xonsh ./.vscode/tasks.xsh run validate-json
 
-      - name: Build AMD64
+      - name: Build arm64
         shell: xonsh {0}
         env:
           DOCKER_PSSWD: ${{ secrets.DOCKER_PSSWD }}
@@ -57,9 +57,9 @@ jobs:
           $XONSH_SHOW_TRACEBACK = True
           $RAISE_SUBPROC_ERROR = True
 
-          xonsh ./.vscode/tasks.xsh run build-docker-image-amd64
+          xonsh ./.vscode/tasks.xsh run build-docker-image-arm64
           xonsh ./.vscode/tasks.xsh run docker-login
-          xonsh ./.vscode/tasks.xsh run push-docker-image-amd64
+          xonsh ./.vscode/tasks.xsh run push-docker-image-arm64
 
       - name: Test
         shell: bash

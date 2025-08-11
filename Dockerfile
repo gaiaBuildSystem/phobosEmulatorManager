@@ -16,6 +16,12 @@ ARG GPU=
 
 # ARGUMENTS --------------------------------------------------------------------
 
+# Stage for amd64-specific tools
+FROM --platform=linux/amd64 docker:dind AS docker-tools-amd64
+
+# Stage for arm64-specific tools
+FROM --platform=linux/arm64 docker:dind AS docker-tools-arm64
+
 
 # DEPLOY ------------------------------------------------------------------------
 FROM --platform=linux/${IMAGE_ARCH} \
@@ -57,8 +63,8 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 	&& apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 
 # use docker tools
-COPY --from=docker:dind /usr/local/bin/docker /usr/local/bin/
-COPY --from=docker:dind /usr/local/libexec/docker/cli-plugins /usr/local/lib/docker/cli-plugins
+COPY --from=docker-tools-${IMAGE_ARCH} /usr/local/bin/docker /usr/local/bin/
+COPY --from=docker-tools-${IMAGE_ARCH} /usr/local/libexec/docker/cli-plugins /usr/local/lib/docker/cli-plugins
 
 # Default to the Skia backend for best performance
 ENV SLINT_BACKEND=winit-skia
