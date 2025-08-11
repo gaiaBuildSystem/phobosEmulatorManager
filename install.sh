@@ -71,7 +71,7 @@ ARCH=$(uname -m)
 if [ "$ARCH" == "x86_64" ]; then
     export TAG="latest"
 elif [ "$ARCH" == "aarch64" ]; then
-    export TAG="latest"
+    export TAG="arm64-v2"
 else
     echo "❌ Unsupported architecture: $ARCH"
     echo "Please run this script on an x86_64 or aarch64 machine."
