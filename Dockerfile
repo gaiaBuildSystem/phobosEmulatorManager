@@ -16,6 +16,9 @@ ARG GPU=
 
 # ARGUMENTS --------------------------------------------------------------------
 
+# DOCKER DIND FOR THE ARCH
+FROM --platform=linux/${IMAGE_ARCH} \
+    docker:dind AS Dind
 
 # DEPLOY ------------------------------------------------------------------------
 FROM --platform=linux/${IMAGE_ARCH} \
@@ -57,8 +60,8 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 	&& apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 
 # use docker tools
-COPY --from=docker:dind /usr/local/bin/docker /usr/local/bin/
-COPY --from=docker:dind /usr/local/libexec/docker/cli-plugins /usr/local/lib/docker/cli-plugins
+COPY --from=Dind /usr/local/bin/docker /usr/local/bin/
+COPY --from=Dind /usr/local/libexec/docker/cli-plugins /usr/local/lib/docker/cli-plugins
 
 # Default to the Skia backend for best performance
 ENV SLINT_BACKEND=winit-skia
