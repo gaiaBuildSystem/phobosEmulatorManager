@@ -86,23 +86,3 @@ jobs:
         with:
           name: screenshot
           path: ./screenshot.png
-
-      - name: Release
-        shell: xonsh {0}
-        env:
-          GH_TOKEN: ${{ secrets.GH_TKN }}
-        run: |
-          $UPDATE_OS_ENVIRON = True
-          $XONSH_SHOW_TRACEBACK = True
-          $RAISE_SUBPROC_ERROR = True
-          $VERSION = $(cat ./VERSION)
-
-          gh repo set-default gaiaBuildSystem/phobosEmulatorManager
-
-          gh release create \
-            --target main $VERSION \
-            -t "PhobOS Emulator Manager $VERSION" \
-            -n "PhobOS Emulator Manager $VERSION" \
-            install.sh \
-            docker-compose.yml \
-            phobos-emulator-manager
