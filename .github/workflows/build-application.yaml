@@ -70,6 +70,7 @@ jobs:
           $XONSH_SHOW_TRACEBACK = True
           $RAISE_SUBPROC_ERROR = True
 
+          docker run --rm -it --privileged torizon/binfmt
           xonsh ./.vscode/tasks.xsh run build-docker-image-arm64
           xonsh ./.vscode/tasks.xsh run docker-login
           xonsh ./.vscode/tasks.xsh run push-docker-image-arm64
