@@ -32,6 +32,9 @@ fi
 # make the xhost accessible to the container
 xhost + >/dev/null 2>&1 || true
 
+# ensure nested compose gets a file path even when XAUTHORITY is unset
+export XAUTHORITY="${XAUTHORITY:-$HOME/.Xauthority}"
+
 # check if we are passing an argument
 # if so, the argument need to be a valid file path
 if [ $# -gt 2 ]; then
