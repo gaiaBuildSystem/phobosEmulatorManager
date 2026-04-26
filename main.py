@@ -152,6 +152,7 @@ class App(app_components.AppWindow): # type: ignore
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
                     USER_VM_NAME={self.__emulatorName} \
+                    XAUTHORITY=/root/.Xauthority \
                     PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
                     PHOBOS_LOCAL_FIRMWARE_PATH={os.environ['PHOBOS_LOCAL_FIRMWARE_PATH']} \
                     docker compose run --rm --service-ports -it emulator
@@ -193,6 +194,7 @@ class App(app_components.AppWindow): # type: ignore
                     RAM={self.ramSize} \
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
+                    XAUTHORITY=/root/.Xauthority \
                     PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
                     PHOBOS_LOCAL_FIRMWARE_PATH={os.environ['PHOBOS_LOCAL_FIRMWARE_PATH']} \
                     docker compose run --rm --service-ports -it emulator-debug
@@ -235,6 +237,7 @@ class App(app_components.AppWindow): # type: ignore
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
                     USER_VM_NAME={self.__emulatorName} \
+                    XAUTHORITY=/root/.Xauthority \
                     docker compose run --rm --service-ports -it image-download
                     """
                 )
