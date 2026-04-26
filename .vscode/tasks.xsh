@@ -9,8 +9,6 @@
 
 # use the xonsh environment to update the OS environment
 $UPDATE_OS_ENVIRON = True
-# Get the full log of error
-$XONSH_SHOW_TRACEBACK = True
 # always return if a cmd fails
 $RAISE_SUBPROC_ERROR = True
 
@@ -56,10 +54,10 @@ Environment variables:
 
     TASKS_DISABLE_INTERACTIVE_INPUT     to disable interactive input
 
-    TASKS_OVERRIDE_ENV                  enable the override of the environment variables
-                                        values with the ones set in the tasks.json file
+    TASKS_OVERRIDE_ENV                  enable the override of the environment
+                                        variables set in the tasks.json
 
-    DOCKER_PASSWORD                        to set the docker password in CI/CD pipelines
+    DOCKER_PSSWD                        to set the docker password in CI/CD pipelines
 
 
 Copyrigth (c) 2025 Toradex and contributors
@@ -127,10 +125,6 @@ try:
 
     # parse the tasks.json file
     _settings = vscode_tasks.get_settings_json(_script_root, _tasks_settings_json)
-    # the responsibility to get the host arch is on the extension
-    # so, when user is running in CI/CD we use the runner arch
-    _settings.get_host_arch()
-
     _tasks = vscode_tasks.get_tasks_json(_script_root)
     _task_runner = vscode_tasks.TaskRunner(_tasks.tasks, _tasks.inputs, _settings)
 
@@ -171,11 +165,6 @@ except Exception as e:
         Error_Out(
             f"❌ Error: {repr(e)}",
             Error.EUSER
-        )
-    elif isinstance(e, RuntimeError):
-        Error_Out(
-            f"❌ Error: {repr(e)}",
-            Error.ETASKEXEC
         )
     else:
         Error_Out(
