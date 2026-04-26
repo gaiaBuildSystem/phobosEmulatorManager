@@ -17,7 +17,7 @@ pipx inject xonsh distro
 pipx inject xonsh shtab
 pipx inject xonsh pyyaml
 pipx inject xonsh psutil
-pipx inject xonsh torizon-templates-utils
+pipx inject xonsh torizon-templates-utils==0.0.11
 pipx inject xonsh GitPython
 pipx inject xonsh python-lsp-server
 pipx inject xonsh pylsp-rope
