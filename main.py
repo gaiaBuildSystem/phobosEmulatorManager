@@ -11,6 +11,23 @@ from datetime import timedelta
 # get the script path
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 
+
+def ensure_local_firmware_path() -> None:
+    if os.environ.get("PHOBOS_LOCAL_FIRMWARE_PATH"):
+        return
+
+    img_path = os.environ.get("PHOBOS_LOCAL_IMG_PATH", "/dev/null")
+
+    if img_path == "/dev/null":
+        os.environ["PHOBOS_LOCAL_FIRMWARE_PATH"] = "/dev/null"
+    elif os.path.isfile(img_path):
+        os.environ["PHOBOS_LOCAL_FIRMWARE_PATH"] = os.path.dirname(img_path)
+    else:
+        os.environ["PHOBOS_LOCAL_FIRMWARE_PATH"] = img_path
+
+
+ensure_local_firmware_path()
+
 # load the components using load_file to set the style
 app_components = slint.load_file("./ui/AppWindow.slint", style="fluent-dark")
 class App(app_components.AppWindow): # type: ignore
@@ -136,6 +153,7 @@ class App(app_components.AppWindow): # type: ignore
                     INSTANCES={self.instances} \
                     USER_VM_NAME={self.__emulatorName} \
                     PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
+                    PHOBOS_LOCAL_FIRMWARE_PATH={os.environ['PHOBOS_LOCAL_FIRMWARE_PATH']} \
                     docker compose run --rm --service-ports -it emulator
                     """
                 )
@@ -176,6 +194,7 @@ class App(app_components.AppWindow): # type: ignore
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
                     PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
+                    PHOBOS_LOCAL_FIRMWARE_PATH={os.environ['PHOBOS_LOCAL_FIRMWARE_PATH']} \
                     docker compose run --rm --service-ports -it emulator-debug
                     """
                 )

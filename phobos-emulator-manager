@@ -43,9 +43,11 @@ if [ $# -eq 1 ]; then
     fi
 
     export PHOBOS_LOCAL_IMG_PATH="$1"
+    export PHOBOS_LOCAL_FIRMWARE_PATH="$(dirname "$PHOBOS_LOCAL_IMG_PATH")"
 else
     # if no argument is passed, we use the default path
     export PHOBOS_LOCAL_IMG_PATH="/opt/phobos-emulator-manager"
+    export PHOBOS_LOCAL_FIRMWARE_PATH="$PHOBOS_LOCAL_IMG_PATH"
 fi
 
 if [ -z "$WSL_DISTRO_NAME" ]; then

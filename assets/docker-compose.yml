@@ -15,6 +15,7 @@ services:
       - /tmp:/tmp
       - /root/.pem/:/root/.pem
       - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host
+      - ${PHOBOS_LOCAL_FIRMWARE_PATH:-/dev/null}:/firmware
     depends_on:
       - dhcp
       - tpm2
@@ -34,6 +35,7 @@ services:
     volumes:
       - /tmp:/tmp
       - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host/phobos.img
+      - ${PHOBOS_LOCAL_FIRMWARE_PATH:-/dev/null}:/firmware
     depends_on:
       - dhcp
       - tpm2
