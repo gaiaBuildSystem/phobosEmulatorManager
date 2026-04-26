@@ -34,12 +34,35 @@ xhost + >/dev/null 2>&1 || true
 
 # check if we are passing an argument
 # if so, the argument need to be a valid file path
-if [ $# -eq 1 ]; then
+if [ $# -gt 2 ]; then
+    echo "❌ Too many arguments."
+    echo "Usage: $0 [absolute-image-path] [arm64|amd64]"
+    exit 69
+fi
+
+if [ $# -ge 1 ]; then
     # Check if the provided path is a file and is absolute
     if [ ! -f "$1" ] || [[ "$1" != /* ]]; then
         echo "❌ Invalid file path: $1"
         echo "Please provide a valid absolute file path."
         exit 69
+    fi
+
+    # check if there is a second argument
+    # if so, it should be arm64 or amd64
+    if [ $# -eq 2 ]; then
+        if [ "$2" != "arm64" ] && [ "$2" != "amd64" ]; then
+            echo "❌ Invalid architecture: $2"
+            echo "Please provide a valid architecture (arm64 or amd64)."
+            exit 69
+        fi
+
+        # if the second argument is valid, we set the PHOBOS_OVERRIDE_ARCH
+        if [ "$2" == "arm64" ]; then
+            export PHOBOS_OVERRIDE_ARCH="aarch64"
+        else
+            export PHOBOS_OVERRIDE_ARCH="x86_64"
+        fi
     fi
 
     export PHOBOS_LOCAL_IMG_PATH="$1"

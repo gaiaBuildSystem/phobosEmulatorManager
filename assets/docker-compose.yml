@@ -10,6 +10,7 @@ services:
       - STORAGE=${STORAGE:-8}
       - RAM=${RAM:-4}
       - NO_KVM=${NO_KVM:-""}
+      - PHOBOS_OVERRIDE_ARCH
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp:/tmp
@@ -31,6 +32,7 @@ services:
       - STORAGE=${STORAGE:-8}
       - RAM=${RAM:-4}
       - NO_KVM=${NO_KVM:-""}
+      - PHOBOS_OVERRIDE_ARCH
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp:/tmp
