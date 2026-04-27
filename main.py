@@ -26,7 +26,20 @@ def ensure_local_firmware_path() -> None:
         os.environ["PHOBOS_LOCAL_FIRMWARE_PATH"] = img_path
 
 
+def ensure_xauthority_path() -> None:
+    if os.environ.get("XAUTHORITY"):
+        return
+
+    default_xauthority = os.path.join(os.path.expanduser("~"), ".Xauthority")
+
+    if os.path.isfile(default_xauthority):
+        os.environ["XAUTHORITY"] = default_xauthority
+    else:
+        os.environ["XAUTHORITY"] = "/dev/null"
+
+
 ensure_local_firmware_path()
+ensure_xauthority_path()
 
 # load the components using load_file to set the style
 app_components = slint.load_file("./ui/AppWindow.slint", style="fluent-dark")
@@ -152,7 +165,7 @@ class App(app_components.AppWindow): # type: ignore
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
                     USER_VM_NAME={self.__emulatorName} \
-                    XAUTHORITY=/root/.Xauthority \
+                    XAUTHORITY={os.environ['XAUTHORITY']} \
                     PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
                     PHOBOS_LOCAL_FIRMWARE_PATH={os.environ['PHOBOS_LOCAL_FIRMWARE_PATH']} \
                     docker compose run --rm --service-ports -it emulator
@@ -194,7 +207,7 @@ class App(app_components.AppWindow): # type: ignore
                     RAM={self.ramSize} \
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
-                    XAUTHORITY=/root/.Xauthority \
+                    XAUTHORITY={os.environ['XAUTHORITY']} \
                     PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
                     PHOBOS_LOCAL_FIRMWARE_PATH={os.environ['PHOBOS_LOCAL_FIRMWARE_PATH']} \
                     docker compose run --rm --service-ports -it emulator-debug
@@ -237,7 +250,7 @@ class App(app_components.AppWindow): # type: ignore
                     STORAGE={self.storageSize} \
                     INSTANCES={self.instances} \
                     USER_VM_NAME={self.__emulatorName} \
-                    XAUTHORITY=/root/.Xauthority \
+                    XAUTHORITY={os.environ['XAUTHORITY']} \
                     docker compose run --rm --service-ports -it image-download
                     """
                 )

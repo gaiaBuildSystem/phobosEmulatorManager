@@ -11,6 +11,7 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
+      - XAUTHORITY=${XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
@@ -40,6 +41,7 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
+      - XAUTHORITY=${XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
@@ -68,6 +70,7 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
+      - XAUTHORITY=${XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
@@ -96,6 +99,7 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
+      - XAUTHORITY=${XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
