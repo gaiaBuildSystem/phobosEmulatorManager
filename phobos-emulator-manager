@@ -11,13 +11,13 @@ if [ ! command -v docker &> /dev/null ]; then
     exit 1
 fi
 
-# Preserve host-provided XAUTHORITY (e.g. SSH X11 forwarding).
+# Preserve host auth file path in a dedicated variable used for bind mounts.
 if [ -n "$XAUTHORITY" ] && [ -f "$XAUTHORITY" ]; then
-    export XAUTHORITY
+    export HOST_XAUTHORITY="$XAUTHORITY"
 elif [ -f "$HOME/.Xauthority" ]; then
-    export XAUTHORITY="$HOME/.Xauthority"
+    export HOST_XAUTHORITY="$HOME/.Xauthority"
 else
-    export XAUTHORITY=/dev/null
+    export HOST_XAUTHORITY=/dev/null
     echo "⚠️ Xauthority file not found. Setting it as /dev/null applications may not be able to connect to the X server."
 fi
 

@@ -15,7 +15,7 @@ services:
     volumes:
       - /tmp:/tmp
       - /root/.pem/:/root/.pem
-      - ${XAUTHORITY:-/dev/null}:/root/.Xauthority
+      - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host
       - ${PHOBOS_LOCAL_FIRMWARE_PATH:-/dev/null}:/firmware
     depends_on:
@@ -37,7 +37,7 @@ services:
       - USER_VM_NAME=${USER_VM_NAME:-""}
     volumes:
       - /tmp:/tmp
-      - ${XAUTHORITY:-/dev/null}:/root/.Xauthority
+      - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${PHOBOS_LOCAL_IMG_PATH:-/dev/null}:/host/phobos.img
       - ${PHOBOS_LOCAL_FIRMWARE_PATH:-/dev/null}:/firmware
     depends_on:

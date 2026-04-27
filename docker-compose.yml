@@ -11,7 +11,8 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
-      - XAUTHORITY=${XAUTHORITY:-/dev/null}
+      - XAUTHORITY=/root/.Xauthority
+      - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
@@ -22,8 +23,7 @@ services:
       - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
       - /run:/run
-      - /var:/var
-      - ${XAUTHORITY:-/dev/null}:/root/.Xauthority
+      - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
     pid: host
     network_mode: host
@@ -41,7 +41,8 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
-      - XAUTHORITY=${XAUTHORITY:-/dev/null}
+      - XAUTHORITY=/root/.Xauthority
+      - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
@@ -53,8 +54,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/wsl/docker.sock:/var/run/docker.sock
       - /run:/run
-      - /var:/var
-      - ${XAUTHORITY:-/dev/null}:/root/.Xauthority
+      - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
     pid: host
     network_mode: host
@@ -70,7 +70,8 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
-      - XAUTHORITY=${XAUTHORITY:-/dev/null}
+      - XAUTHORITY=/root/.Xauthority
+      - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
@@ -82,8 +83,7 @@ services:
       - /tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
       - /run:/run
-      - /var:/var
-      - ${XAUTHORITY:-/dev/null}:/root/.Xauthority
+      - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
     pid: host
     network_mode: host
@@ -99,7 +99,8 @@ services:
       - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
       - WAYLAND_DISPLAY=
       - DISPLAY=${DISPLAY}
-      - XAUTHORITY=${XAUTHORITY:-/dev/null}
+      - XAUTHORITY=/root/.Xauthority
+      - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
@@ -112,8 +113,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/wsl/docker.sock:/var/run/docker.sock
       - /run:/run
-      - /var:/var
-      - ${XAUTHORITY:-/dev/null}:/root/.Xauthority
+      - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
     pid: host
     network_mode: host
