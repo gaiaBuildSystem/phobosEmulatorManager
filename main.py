@@ -196,6 +196,8 @@ class App(app_components.AppWindow): # type: ignore
             self.runningMessage = "RUNNING ..."
             self.settled = True
 
+            override_arch = os.environ.get("PHOBOS_OVERRIDE_ARCH", "")
+            override_arch_env = f"PHOBOS_OVERRIDE_ARCH={override_arch} \\\n" if override_arch else ""
             self.__future = self.exec_bash(
                     f"""
                     cd {SCRIPT_PATH}/assets && \
@@ -205,7 +207,7 @@ class App(app_components.AppWindow): # type: ignore
                     HOST_XAUTHORITY={os.environ['HOST_XAUTHORITY']} \
                     PHOBOS_LOCAL_IMG_PATH={os.environ['PHOBOS_LOCAL_IMG_PATH']} \
                     PHOBOS_LOCAL_FIRMWARE_PATH={os.environ['PHOBOS_LOCAL_FIRMWARE_PATH']} \
-                    docker compose run --rm --service-ports -it emulator-debug
+                    {override_arch_env}docker compose run --rm --service-ports -it emulator-debug
                     """
                 )
 
@@ -242,6 +244,12 @@ class App(app_components.AppWindow): # type: ignore
             else:
                 host_path = container_path
             self.debugImagePath = host_path
+
+            filename = os.path.basename(host_path)
+            if "qemuarm64" in filename:
+                os.environ["PHOBOS_OVERRIDE_ARCH"] = "aarch64"
+            elif "qemux86" in filename:
+                os.environ["PHOBOS_OVERRIDE_ARCH"] = "x86_64"
 
 
     @slint.callback # type: ignore
