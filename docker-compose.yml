@@ -13,6 +13,7 @@ services:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
       - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
+      - HOST_HOME=${HOME}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
@@ -25,6 +26,7 @@ services:
       - /run:/run
       - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
+      - ${HOME}:/root/host-home
     pid: host
     network_mode: host
     privileged: true
@@ -43,6 +45,7 @@ services:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
       - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
+      - HOST_HOME=${HOME}
       - SLINT_STYLE=fluent-dark
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
       - PHOBOS_LOCAL_IMG_PATH=${PHOBOS_LOCAL_IMG_PATH:-/dev/null}
@@ -56,6 +59,7 @@ services:
       - /run:/run
       - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
+      - ${HOME}:/root/host-home
     pid: host
     network_mode: host
     privileged: true
@@ -72,6 +76,7 @@ services:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
       - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
+      - HOST_HOME=${HOME}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
@@ -85,6 +90,7 @@ services:
       - /run:/run
       - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
+      - ${HOME}:/root/host-home
     pid: host
     network_mode: host
     privileged: true
@@ -101,6 +107,7 @@ services:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
       - HOST_XAUTHORITY=${HOST_XAUTHORITY:-/dev/null}
+      - HOST_HOME=${HOME}
       - SLINT_STYLE=fluent-dark
       - NO_KVM=1
       - PHOBOS_EMULATOR_TEST=${PHOBOS_EMULATOR_TEST:-""}
@@ -115,6 +122,7 @@ services:
       - /run:/run
       - ${HOST_XAUTHORITY:-/dev/null}:/root/.Xauthority
       - ${HOME}/.pem/:/root/.pem
+      - ${HOME}:/root/host-home
     pid: host
     network_mode: host
     privileged: true

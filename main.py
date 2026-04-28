@@ -211,7 +211,45 @@ class App(app_components.AppWindow): # type: ignore
 
 
     @slint.callback # type: ignore
+    def selectDebugImage(self):
+        host_home = os.environ.get("HOST_HOME", os.path.expanduser("~"))
+        script = (
+            "import tkinter as tk\n"
+            "from tkinter import filedialog\n"
+            "import sys\n"
+            "root = tk.Tk()\n"
+            "root.withdraw()\n"
+            "root.wm_attributes('-topmost', True)\n"
+            "path = filedialog.askopenfilename(\n"
+            "    title='Select Debug OS Image',\n"
+            "    initialdir='/root/host-home',\n"
+            "    filetypes=[('Image files', '*.img *.qcow2 *.raw'), ('All files', '*.*')]\n"
+            ")\n"
+            "root.destroy()\n"
+            "print(path if path else '', end='')\n"
+        )
+        result = subprocess.run(
+            ["python3", "-c", script],
+            capture_output=True,
+            text=True,
+            env=os.environ
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            container_path = result.stdout.strip()
+            container_home = "/root/host-home"
+            if container_path.startswith(container_home):
+                host_path = host_home + container_path[len(container_home):]
+            else:
+                host_path = container_path
+            self.debugImagePath = host_path
+
+
+    @slint.callback # type: ignore
     def startEmulator(self):
+        if self.debugImagePath:
+            os.environ["PHOBOS_LOCAL_IMG_PATH"] = self.debugImagePath
+            os.environ["PHOBOS_LOCAL_FIRMWARE_PATH"] = os.path.dirname(self.debugImagePath)
+
         if 'PHOBOS_LOCAL_IMG_PATH' not in os.environ or os.environ['PHOBOS_LOCAL_IMG_PATH'] == "/dev/null":
             self.__pulling = True
             self.runningMessage = "Downloading emulator image ..."

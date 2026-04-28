@@ -49,6 +49,7 @@ RUN apt-get update \
     xkb-data \
     python3 \
     python3-pip \
+    python3-tk \
     pipx \
     && rm -rf /var/lib/apt/lists/*
 

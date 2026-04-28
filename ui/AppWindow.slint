@@ -32,7 +32,9 @@ export component AppWindow inherits Window {
     in-out property<string> messageFooterLevel : "warn";
     in-out property<int> backDeg : 40;
     in-out property<[string]> emulatorList : [];
+    in-out property<string> debugImagePath : "";
     callback startEmulator();
+    callback selectDebugImage();
     callback storeEmulator(emulatorName: string) -> bool;
     callback rmStoredEmulator(emulatorName: string) -> bool;
     callback runStoredEmulator(emulatorName: string);
@@ -130,7 +132,7 @@ export component AppWindow inherits Window {
 
         HorizontalLayout {
             alignment: LayoutAlignment.center;
-            padding-top: 30px;
+            padding-top: -10px;
 
             vmLogo := HorizontalBox {
                 padding-top: -8px;
@@ -181,7 +183,7 @@ export component AppWindow inherits Window {
     VerticalLayout {
         alignment: LayoutAlignment.end;
         spacing: 10px;
-        padding-bottom: 60px;
+        padding-bottom: 30px;
 
         HorizontalLayout {
             x: storageSizeInput.x;
@@ -254,6 +256,38 @@ export component AppWindow inherits Window {
                 value <=> instances;
                 width: 400px;
                 height: 40px;
+            }
+        }
+
+        HorizontalLayout {
+            x: ramSizeInput.x;
+            padding-top: 20px;
+
+            Text {
+                text: "Select a raw Image file:";
+                font-size: 15px;
+            }
+        }
+
+        HorizontalLayout {
+            alignment: LayoutAlignment.center;
+            spacing: 8px;
+
+            LineEdit {
+                text: debugImagePath == "" ? "No image selected" : debugImagePath;
+                enabled: false;
+                width: 316px;
+                height: 40px;
+            }
+
+            Button {
+                text: "Browse";
+                enabled: !running && !initializing;
+                width: 76px;
+                height: 40px;
+                clicked => {
+                    selectDebugImage();
+                }
             }
         }
 
