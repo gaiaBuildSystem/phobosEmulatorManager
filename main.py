@@ -215,35 +215,47 @@ class App(app_components.AppWindow): # type: ignore
     @slint.callback # type: ignore
     def selectDebugImage(self):
         host_home = os.environ.get("HOST_HOME", os.path.expanduser("~"))
+
+        # restore last used directory
+        last_dir_file = os.path.join(os.path.expanduser("~"), ".pem", "last_debug_img_dir")
+        container_home = "/root/host-home"
+        default_dir = container_home if os.path.isdir(container_home) else os.path.expanduser("~")
+        if os.path.exists(last_dir_file):
+            with open(last_dir_file, "r") as f:
+                initial_dir = f.read().strip() or default_dir
+        else:
+            initial_dir = default_dir
+
         script = (
-            "import tkinter as tk\n"
-            "from tkinter import filedialog\n"
-            "import sys\n"
-            "root = tk.Tk()\n"
-            "root.withdraw()\n"
-            "root.wm_attributes('-topmost', True)\n"
-            "path = filedialog.askopenfilename(\n"
-            "    title='Select Debug OS Image',\n"
-            "    initialdir='/root/host-home',\n"
-            "    filetypes=[('Image files', '*.img *.qcow2 *.raw'), ('All files', '*.*')]\n"
-            ")\n"
-            "root.destroy()\n"
-            "print(path if path else '', end='')\n"
+            "import wx\n"
+            "app = wx.App(False)\n"
+            f"dlg = wx.FileDialog(None, 'Select Debug OS Image', defaultDir={repr(initial_dir)},\n"
+            "    wildcard='Image files (*.img;*.qcow2;*.raw)|*.img;*.qcow2;*.raw|All files (*.*)|*.*',\n"
+            "    style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)\n"
+            "dlg.SetSize((900, 600))\n"
+            "dlg.CenterOnScreen()\n"
+            "path = dlg.GetPath() if dlg.ShowModal() == wx.ID_OK else ''\n"
+            "dlg.Destroy()\n"
+            "print(path, end='')\n"
         )
         result = subprocess.run(
-            ["python3", "-c", script],
+            ["/usr/bin/python3", "-c", script],
             capture_output=True,
             text=True,
             env=os.environ
         )
         if result.returncode == 0 and result.stdout.strip():
             container_path = result.stdout.strip()
-            container_home = "/root/host-home"
             if container_path.startswith(container_home):
                 host_path = host_home + container_path[len(container_home):]
             else:
                 host_path = container_path
             self.debugImagePath = host_path
+
+            # save last used directory for next time
+            os.makedirs(os.path.join(os.path.expanduser("~"), ".pem"), exist_ok=True)
+            with open(last_dir_file, "w") as f:
+                f.write(os.path.dirname(container_path))
 
             filename = os.path.basename(host_path)
             if "qemuarm64" in filename:
