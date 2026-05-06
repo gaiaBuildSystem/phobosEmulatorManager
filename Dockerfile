@@ -93,6 +93,10 @@ USER root
 
 ENV VIRTUAL_ENV="/home/torizon/.venv"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV XDG_DATA_DIRS="/usr/share"
+
+# update the mime database
+RUN update-mime-database /usr/share/mime
 
 # Command executed in runtime when the container starts
 CMD ["python", "main.py"]
