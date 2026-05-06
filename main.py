@@ -239,7 +239,7 @@ class App(app_components.AppWindow): # type: ignore
             "print(path, end='')\n"
         )
         result = subprocess.run(
-            ["/usr/bin/python3", "-c", script],
+            ["/usr/bin/python3.11", "-c", script],
             capture_output=True,
             text=True,
             env=os.environ
