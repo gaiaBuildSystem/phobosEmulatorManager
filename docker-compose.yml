@@ -28,6 +28,7 @@ services:
       - ${HOME}/.pem/:/root/.pem
       - ${HOME}:/root/host-home
     pid: host
+    ipc: host
     network_mode: host
     privileged: true
 
@@ -61,6 +62,7 @@ services:
       - ${HOME}/.pem/:/root/.pem
       - ${HOME}:/root/host-home
     pid: host
+    ipc: host
     network_mode: host
     privileged: true
 
@@ -92,6 +94,7 @@ services:
       - ${HOME}/.pem/:/root/.pem
       - ${HOME}:/root/host-home
     pid: host
+    ipc: host
     network_mode: host
     privileged: true
 
@@ -124,5 +127,6 @@ services:
       - ${HOME}/.pem/:/root/.pem
       - ${HOME}:/root/host-home
     pid: host
+    ipc: host
     network_mode: host
     privileged: true

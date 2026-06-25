@@ -3,6 +3,7 @@ services:
     image: pergamos/phobos:latest
     privileged: true
     network_mode: host
+    ipc: host
     init: false
     environment:
       - DISPLAY=${DISPLAY:-:1}
@@ -26,6 +27,7 @@ services:
     image: pergamos/phobos:latest
     privileged: true
     network_mode: host
+    ipc: host
     init: false
     environment:
       - DISPLAY=${DISPLAY:-:1}
