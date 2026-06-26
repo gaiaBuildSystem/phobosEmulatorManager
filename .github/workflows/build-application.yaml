@@ -82,6 +82,7 @@ jobs:
         run: |
           docker run --rm -v "$PWD:/pwd" trufflesecurity/trufflehog:latest filesystem \
             /pwd \
+            --exclude-paths=/pwd/.exclude-truffle \
             --fail
 
       - name: Publish Screenshot
