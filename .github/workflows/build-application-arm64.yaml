@@ -50,16 +50,12 @@ jobs:
 
       - name: Build arm64
         shell: xonsh {0}
-        env:
-          DOCKER_PSSWD: ${{ secrets.DOCKER_PSSWD }}
         run: |
           $UPDATE_OS_ENVIRON = True
           $XONSH_SHOW_TRACEBACK = True
           $RAISE_SUBPROC_ERROR = True
 
           xonsh ./.vscode/tasks.xsh run build-docker-image-arm64
-          xonsh ./.vscode/tasks.xsh run docker-login
-          xonsh ./.vscode/tasks.xsh run push-docker-image-arm64
 
       - name: Test
         shell: bash
@@ -81,8 +77,27 @@ jobs:
             exit $APP_EXIT_CODE
           fi
 
+      - name: TruffleHog Scan Workspace Files
+        shell: bash
+        run: |
+          docker run --rm -v "$PWD:/pwd" trufflesecurity/trufflehog:latest filesystem \
+            /pwd \
+            --fail
+
       - name: Publish Screenshot
         uses: actions/upload-artifact@v4
         with:
           name: screenshot
           path: ./screenshot.png
+
+      - name: Push ARM64
+        shell: xonsh {0}
+        env:
+          DOCKER_PSSWD: ${{ secrets.DOCKER_PSSWD }}
+        run: |
+          $UPDATE_OS_ENVIRON = True
+          $XONSH_SHOW_TRACEBACK = True
+          $RAISE_SUBPROC_ERROR = True
+
+          xonsh ./.vscode/tasks.xsh run docker-login
+          xonsh ./.vscode/tasks.xsh run push-docker-image-arm64
