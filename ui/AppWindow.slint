@@ -31,6 +31,8 @@ export component AppWindow inherits Window {
     in-out property<string> messageFooterText : "Emulator Manager";
     in-out property<string> messageFooterLevel : "warn";
     in-out property<int> backDeg : 40;
+    in-out property<length> radialCenterX : 0;
+    in-out property<length> radialCenterY : 0;
     in-out property<[string]> emulatorList : [];
     in-out property<string> debugImagePath : "";
     callback startEmulator();
@@ -65,13 +67,16 @@ export component AppWindow inherits Window {
     }
 
     Rectangle {
-        background: @linear-gradient(backDeg * -1deg, #810c35, #3c0c1d,);
+        background: @radial-gradient(circle 10px at radialCenterX radialCenterY, #0c4781 100%, #0c0f3c 8000%);
     }
 
     TouchArea {
         pointer-event => {
             backDeg = ((self.mouse-x / self.height) * 180);
+            radialCenterX = self.mouse-x;
+            radialCenterY = self.mouse-y;
         }
+
         clicked => {
             if (_newEmulatorOpen && !_isClickUnderWidget({
                 mouse-x: self.mouse-x / 1px,
@@ -386,7 +391,7 @@ export component AppWindow inherits Window {
     // background fade
     if (_newEmulatorOpen || _messageFooterOpen || _listEmulatorsOpen) :
     Rectangle {
-        background: @linear-gradient(backDeg * -1deg, #810c35, #3c0c1d,);
+        background: @radial-gradient(circle 10px at radialCenterX radialCenterY, #0c4781 0%, #0c0f3c 100%);
         opacity: 0.5;
         width: 100%;
         height: 100%;
