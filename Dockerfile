@@ -44,6 +44,7 @@ RUN apt-get update \
     libxkbcommon-x11-0 \
     libfontconfig1 \
     libfreetype6 \
+    libx11-dev \
     libgbm1 \
     libinput10 \
     libxkbcommon0 \
