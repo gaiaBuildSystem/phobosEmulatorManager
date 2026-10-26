@@ -34,6 +34,7 @@ RUN apt-get update \
     apt-get install -y \
     wget \
     libgl1 \
+    libegl1 \
     libicu72 \
     zlib1g \
     unzip \

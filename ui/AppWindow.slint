@@ -35,6 +35,10 @@ export component AppWindow inherits Window {
     in-out property<length> radialCenterY : 0;
     in-out property<[string]> emulatorList : [];
     in-out property<string> debugImagePath : "";
+    in-out property<image> logoFrame;
+    // pointer position relative to the 3D logo center, normalized to -1 .. 1
+    out property<float> logoLookX : 0;
+    out property<float> logoLookY : 0;
     callback startEmulator();
     callback selectDebugImage();
     callback storeEmulator(emulatorName: string) -> bool;
@@ -75,6 +79,8 @@ export component AppWindow inherits Window {
             backDeg = ((self.mouse-x / self.height) * 180);
             radialCenterX = self.mouse-x;
             radialCenterY = self.mouse-y;
+            logoLookX = clamp((self.mouse-x - (logo3d.absolute-position.x + logo3d.width / 2)) / (root.width / 2), -1, 1);
+            logoLookY = clamp((self.mouse-y - (logo3d.absolute-position.y + logo3d.height / 2)) / (root.height / 2), -1, 1);
         }
 
         clicked => {
@@ -118,9 +124,7 @@ export component AppWindow inherits Window {
 
     public function __init() {
         debug("Initializing ...");
-        vmLogo.opacity = 0.6;
-        vmLogo.padding-right = -50px;
-        phobosLogo.opacity = 0.8;
+        logo3d.opacity = 1;
         initializing = false;
     }
 
@@ -132,54 +136,22 @@ export component AppWindow inherits Window {
 
     VerticalLayout {
         alignment: LayoutAlignment.start;
-        padding-top: 50px;
+        padding-top: 30px;
         spacing: 10px;
 
         HorizontalLayout {
             alignment: LayoutAlignment.center;
-            padding-top: -10px;
 
-            vmLogo := HorizontalBox {
-                padding-top: -8px;
-                padding-right: -90px;
-                padding-left: -2px;
+            // frames of the 3D logo are rendered by the code behind
+            logo3d := Image {
+                source: logoFrame;
+                width: 440px;
+                height: 150px;
                 opacity: 0;
 
-                Image {
-                    source: @image-url("./assets/monitor.png");
-                    width: 110px;
-                    height: 110px;
-                }
-
-                animate padding-right {
-                    duration: 500ms;
-                    delay: 1.5s;
+                animate opacity {
+                    duration: 800ms;
                     easing: ease-in-out;
-                }
-
-                animate opacity  {
-                    duration: 500ms;
-                    delay: 1.5s;
-                    easing: ease-in-out;
-                }
-            }
-
-            phobosLogo := HorizontalBox {
-                padding-right: 10px;
-                padding-top: 0px;
-                padding-left: 55px;
-                opacity: 0;
-
-                Image {
-                    source: @image-url("./assets/logoABitWhite.png");
-                    width: 555px * 0.5;
-                    height: 193px * 0.5;
-                }
-
-                animate opacity  {
-                     duration: 500ms;
-                     delay: 1.5s;
-                     easing: ease-in-out;
                 }
             }
         }

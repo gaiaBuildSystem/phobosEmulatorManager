@@ -5,3 +5,4 @@ credentials.zip
 *.lock.yml
 
 .mypy_cache
+__pycache__

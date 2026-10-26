@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import subprocess
 import concurrent.futures
 from typing import Optional
@@ -7,9 +8,21 @@ from concurrent.futures import Future
 import slint # type: ignore
 from slint import Timer, TimerMode, ListModel # type: ignore
 from datetime import timedelta
+from ui.model3d import GlbModel, GlRenderThread
 
 # get the script path
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
+
+# 3D logo settings
+LOGO_MODEL_PATH = os.path.join(SCRIPT_PATH, "ui", "assets", "torizon-os-3d.glb")
+LOGO_WIDTH = 440
+LOGO_HEIGHT = 150
+# max rotation (radians) when the pointer is at the window edges
+LOGO_MAX_YAW = 0.6
+LOGO_MAX_PITCH = 0.35
+LOGO_FPS = 60
+# how much of the distance to the pointer is covered every 1/30 s, 0 .. 1
+LOGO_EASING = 0.4
 
 
 def ensure_local_firmware_path() -> None:
@@ -58,7 +71,68 @@ class App(app_components.AppWindow): # type: ignore
         return result
 
 
+    def __animate_logo(self):
+        self.__logoTarget = (
+            self.logoLookX * LOGO_MAX_YAW,
+            self.logoLookY * LOGO_MAX_PITCH
+        )
+
+        # exponential ease out, independent of the timer precision
+        now = time.monotonic()
+        # clamped so a stalled event loop does not snap the logo to the pointer
+        elapsed = min(now - self.__logoTick, 0.1)
+        self.__logoTick = now
+        step = 1 - (1 - LOGO_EASING) ** (elapsed * 30)
+
+        yaw, pitch = self.__logoAngles
+        yaw += (self.__logoTarget[0] - yaw) * step
+        pitch += (self.__logoTarget[1] - pitch) * step
+        self.__logoAngles = (yaw, pitch)
+
+        # show the frame rendered since the last tick
+        frame = self.__logoRenderer.take_frame() # type: ignore
+        if frame is not None:
+            self.logoFrame = slint.Image.load_from_array(frame)
+
+        # only render again when the rotation changed in a visible way
+        shown = (round(yaw, 4), round(pitch, 4))
+        if shown == self.__logoShown:
+            return
+        self.__logoShown = shown
+        self.__logoRenderer.request(yaw, pitch) # type: ignore
+
+
+    def __init_logo(self):
+        try:
+            self.__logoModel = GlbModel(LOGO_MODEL_PATH)
+            self.__logoModel.fit_angles(LOGO_MAX_YAW, LOGO_MAX_PITCH)
+        except Exception as e:
+            print(f"Could not load the 3D logo: {e}")
+            return
+
+        try:
+            self.__logoRenderer = GlRenderThread(self.__logoModel, LOGO_WIDTH, LOGO_HEIGHT)
+        except Exception as e:
+            # without OpenGL show the front view rendered by software, without following the pointer
+            print(f"OpenGL not available, the 3D logo will be static: {e}")
+            self.logoFrame = slint.Image.load_from_array(
+                self.__logoModel.render(LOGO_WIDTH, LOGO_HEIGHT, 0, 0)
+            )
+            return
+
+        self.__logoTick = time.monotonic()
+        self.__animate_logo()
+
+        self.__logoTimer.start(
+            TimerMode.Repeated,
+            timedelta(milliseconds=1000 // LOGO_FPS),
+            self.__animate_logo
+        )
+
+
     def ___init(self):
+        self.__init_logo()
+
         # we are good to go
         self.__init()
 
@@ -135,6 +209,15 @@ class App(app_components.AppWindow): # type: ignore
 
         # when setting the emulator name
         self.__emulatorName = None
+
+        # 3D logo
+        self.__logoModel: Optional[GlbModel] = None
+        self.__logoRenderer: Optional[GlRenderThread] = None
+        self.__logoShown = None
+        self.__logoTick = 0.0
+        self.__logoTarget = (0.0, 0.0)
+        self.__logoAngles = (0.0, 0.0)
+        self.__logoTimer = Timer()
 
         # timer
         self.timer = Timer()
