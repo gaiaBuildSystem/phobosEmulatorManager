@@ -2,8 +2,8 @@
 
 <p align="center">
     <img
-        src="./.doc/image.png"
-        height="512"
+        src="./.doc/phobosemulator.png"
+        height="412"
     />
 </p>
 
