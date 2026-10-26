@@ -78,7 +78,13 @@ else
     exit 1
 fi
 
-docker compose -f /opt/phobos-emulator-manager/docker-compose.yml pull
+# on tests the image was just built locally, pulling would replace it
+# with the one from the registry, so the old image would be tested and pushed
+if [ -z "$PHOBOS_EMULATOR_TEST" ]; then
+    docker compose -f /opt/phobos-emulator-manager/docker-compose.yml pull
+else
+    echo "🧪 Skipping the image pull to test the local build ..."
+fi
 
 if [ ! -f /opt/phobos-emulator-manager/phobos.img ]; then
     # there was never a phobos.img
